@@ -21,13 +21,33 @@
         header {
             background: linear-gradient(135deg, var(--dominican-blue), #003366);
             color: white;
-            padding: 3rem 0;
+            padding: 2rem 0;
             text-align: center;
             position: relative;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .school-logo {
+            height: 80px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
         header h1 {
-            margin: 0;
+            margin: 10px 0 5px 0;
             font-size: 3rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
@@ -35,6 +55,7 @@
             font-style: italic;
             opacity: 0.9;
             font-size: 1.2rem;
+            margin-top: 10px;
         }
         .container {
             max-width: 800px;
@@ -82,6 +103,14 @@
             left: -10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
+        .mascot-image {
+            max-width: 200px;
+            display: block;
+            margin: 15px auto;
+            border-radius: 8px;
+            border: 3px solid var(--dominican-gold);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
         footer {
             background-color: var(--dominican-blue);
             color: white;
@@ -105,6 +134,13 @@
             header h1 {
                 font-size: 2rem;
             }
+            .logo-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .school-logo {
+                height: 60px;
+            }
             .container {
                 padding: 0 15px;
             }
@@ -116,70 +152,87 @@
 </head>
 <body>
     <header>
-        <h1>Trivia-Ange</h1>
-        <p>Did You Know? Fascinating facts about UST Angelicum College</p>
+        <div class="header-content">
+            <div class="logo-container">
+                <!-- School Logo - Replace with your actual image -->
+                <img src="images/angelicum-logo.png" alt="UST Angelicum College Logo" class="school-logo">
+            </div>
+            <h1>Trivia-Ange</h1>
+            <p>Did You Know? Fascinating facts about UST Angelicum College</p>
+        </div>
     </header>
 
     <div class="container">
-        <!-- Did You Know Trivia -->
+        <!-- Trivia Card 1 -->
         <div class="trivia-card">
             <div class="trivia-number">1</div>
             <h3>Non-Graded System</h3>
             <p>UST Angelicum was one of the first schools in the Philippines to adopt a non-graded system, meaning students progress based on mastery rather than traditional grade levels.</p>
         </div>
 
+        <!-- Trivia Card 2 -->
         <div class="trivia-card">
             <div class="trivia-number">2</div>
             <h3>Founded by a Dominican Priest</h3>
             <p>The school was established in 1972 by Fr. Rogelio B. Alarcon, O.P., a Dominican priest who wanted a more flexible and individualized approach to education.</p>
         </div>
 
+        <!-- Trivia Card 3 -->
         <div class="trivia-card">
             <div class="trivia-number">3</div>
             <h3>Connection to the Vatican's Angelicum University</h3>
             <p>The name "Angelicum" comes from the Pontifical University of Saint Thomas Aquinas (Angelicum) in Rome, a prestigious Dominican university where many Filipino priests, including some UST professors, have studied.</p>
         </div>
 
+        <!-- Trivia Card 4 -->
         <div class="trivia-card">
             <div class="trivia-number">4</div>
             <h3>Sarah Geronimo's Alma Mater</h3>
             <p>Pop superstar Sarah Geronimo studied here before transferring to another school. She remains one of its most famous alumni.</p>
         </div>
 
+        <!-- Trivia Card 5 -->
         <div class="trivia-card">
             <div class="trivia-number">5</div>
             <h3>No Numerical Grades Until College</h3>
             <p>In its basic education program, students receive descriptive evaluations (like "Proficient" or "Advancing") instead of traditional number grades. Numerical grades only appear in college.</p>
         </div>
 
+        <!-- Trivia Card 6 -->
         <div class="trivia-card">
             <div class="trivia-number">6</div>
             <h3>Bianca Bustamante, F1 Academy Racer</h3>
             <p>Bianca Bustamante, the first Filipina to race in the F1 Academy (a Formula 1 women's racing series), is an alumna of UST Angelicum.</p>
         </div>
 
+        <!-- Trivia Card 7 -->
         <div class="trivia-card">
             <div class="trivia-number">7</div>
             <h3>Formerly an All-Boys School</h3>
             <p>When it first opened in 1972, Angelicum was an all-boys school. It later became co-educational.</p>
         </div>
 
+        <!-- Trivia Card 8 -->
         <div class="trivia-card">
             <div class="trivia-number">8</div>
             <h3>UST Affiliation (But Independent Financially)</h3>
             <p>Despite being integrated with UST Manila in 2018, Angelicum still manages its own finances and operations, retaining its unique identity.</p>
         </div>
 
+        <!-- Trivia Card 9 -->
         <div class="trivia-card">
             <div class="trivia-number">9</div>
             <h3>No School Uniform Policy (Before)</h3>
             <p>Unlike most Catholic schools in the Philippines, Angelicum did not require uniforms for many years, promoting a more relaxed environment. However, policies may have changed since integration with UST.</p>
         </div>
 
+        <!-- Trivia Card 10 - With Mascot Image -->
         <div class="trivia-card">
             <div class="trivia-number">10</div>
             <h3>Home of the "Tigercubs" & "Roebucks"</h3>
             <p>The school's mascots are the Tigercubs (for younger students) and Roebucks (for older students), inspired by the Dominican tradition of using animals as symbols.</p>
+            <!-- Mascot Image - Replace with your actual image -->
+            <img src="images/mascot.png" alt="Angelicum Tigercub and Roebuck Mascots" class="mascot-image">
         </div>
 
         <!-- General Information Section -->
