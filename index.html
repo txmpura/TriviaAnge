@@ -6,7 +6,7 @@
     <title>Trivia-Ange | UST Angelicum College</title>
     <style>
         :root {
-            /* Default Theme (Light) */
+       
             --dominican-blue: #0056b3;
             --dominican-gold: #FFD700;
             --light-blue: #e6f0fa;
@@ -15,7 +15,7 @@
             --card-bg: white;
         }
 
-        /* Theme Selector Styles */
+   
         .theme-selector {
             position: fixed;
             bottom: 20px;
@@ -55,7 +55,7 @@
             display: flex;
         }
 
-        /* Base Styles */
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -217,7 +217,7 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
 
-        /* ===== TIMELINE STYLES ===== */
+        
         .timeline-section {
             margin: 3rem 0;
             padding: 2rem 0;
@@ -312,7 +312,7 @@
             }
         }
 
-        /* ===== ALL 30 THEMES ===== */
+      
         body.light-theme {
             --dominican-blue: #0056b3;
             --dominican-gold: #FFD700;
@@ -594,7 +594,7 @@
     </style>
 </head>
 <style>
-        /* ===== ALUMNI CAROUSEL STYLES ===== */
+
         .alumni-section {
             margin: 3rem 0;
             padding: 2rem;
@@ -711,7 +711,7 @@
 </head>
 <body>
 <body class="light-theme">
-    <!-- Theme Selector -->
+  
     <div class="theme-selector">
         <div class="theme-button" style="background: #0056b3;" onclick="toggleThemePalette()"></div>
         <div class="theme-palette" id="themePalette">
@@ -749,11 +749,10 @@
         </div>
     </div>
 
-    <!-- Rest of your HTML content remains exactly the same -->
     <header>
         <div class="header-content">
             <div class="logo-container">
-                <!-- School Logo - Replace with your actual image -->
+   
                 <img src="images/angelicum-logo.png" alt="UST Angelicum College Logo" class="school-logo">
             </div>
             <h1>Trivia-Ange</h1>
@@ -762,10 +761,10 @@
     </header>
 
     <div class="container">
-        <!-- Next Fact Button -->
+
         <button id="nextFact">Next Fact</button>
 
-        <!-- Trivia Cards -->
+
         <div class="trivia-card active">
             <div class="trivia-number">1</div>
             <h3>Non-Graded System</h3>
@@ -824,11 +823,11 @@
             <div class="trivia-number">10</div>
             <h3>Home of the "Tigercubs" & "Roebucks"</h3>
             <p>The school's mascots are the Tigercubs (for younger students) and Roebucks (for older students), inspired by the Dominican tradition of using animals as symbols.</p>
-            <!-- Mascot Image - Replace with your actual image -->
+     
             <img src="images/mascot.png" alt="Angelicum Tigercub and Roebuck Mascots" class="mascot-image">
         </div>
 
-        <!-- Timeline Section -->
+    
         <div class="timeline-section">
             <h2 class="timeline-title">Angelicum Timeline</h2>
             <div class="timeline-container">
@@ -889,7 +888,7 @@
             </div>
         </div>
 
-        <!-- General Information Section -->
+
         <div class="general-info">
             <h2>About UST Angelicum College</h2>
             <p><strong>Full Name:</strong> University of Santo Tomas – Angelicum College (formerly Angelicum School and Angelicum College).</p>
@@ -925,7 +924,7 @@
             <button class="carousel-arrow next">❯</button>
             
             <div class="alumni-track">
-                <!-- Sarah Geronimo -->
+      
                 <div class="alumni-card">
                     <img src="images/sarah.png" alt="Sarah Geronimo" class="alumni-image">
                     <h3 class="alumni-name">Sarah Geronimo</h3>
@@ -933,7 +932,7 @@
                     <p class="alumni-bio">One of the most successful Filipino artists of all time, known as the "Popstar Royalty" of the Philippines.</p>
                 </div>
                 
-                <!-- Bernadette Sembrano -->
+    
                 <div class="alumni-card">
                     <img src="images/bernadette.png" alt="Bernadette Sembrano" class="alumni-image">
                     <h3 class="alumni-name">Bernadette Sembrano</h3>
@@ -941,7 +940,7 @@
                     <p class="alumni-bio">Veteran news anchor known for her work on ABS-CBN and ANC.</p>
                 </div>
                 
-                <!-- Antonio Trillanes -->
+              
                 <div class="alumni-card">
                     <img src="images/antonio.png" alt="Antonio Trillanes" class="alumni-image">
                     <h3 class="alumni-name">Antonio Trillanes</h3>
@@ -949,7 +948,7 @@
                     <p class="alumni-bio">Former Philippine Navy officer and senator known for his advocacy work.</p>
                 </div>
                 
-                <!-- Julie Anne San Jose -->
+    
                 <div class="alumni-card">
                     <img src="images/julie.png" alt="Julie Anne San Jose" class="alumni-image">
                     <h3 class="alumni-name">Julie Anne San Jose</h3>
@@ -957,7 +956,7 @@
                     <p class="alumni-bio">Multi-awarded performer known as GMA Network's "Ultimate Star".</p>
                 </div>
                 
-                <!-- Bianca Bustamante -->
+         
                 <div class="alumni-card">
                     <img src="images/bianca.png" alt="Bianca Bustamante" class="alumni-image">
                     <h3 class="alumni-name">Bianca Bustamante</h3>
@@ -976,10 +975,10 @@
         </div>
     </div>
 
-    <!-- Keep your existing footer -->
+
 
     <script>
-        // Alumni Carousel Functionality
+    
         document.addEventListener('DOMContentLoaded', function() {
             const track = document.querySelector('.alumni-track');
             const cards = document.querySelectorAll('.alumni-card');
@@ -992,25 +991,25 @@
             function updateCarousel() {
                 track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
                 
-                // Update dots
+
                 dots.forEach((dot, index) => {
                     dot.classList.toggle('active', index === currentIndex);
                 });
             }
             
-            // Next button
+
             nextBtn.addEventListener('click', () => {
                 currentIndex = (currentIndex + 1) % cards.length;
                 updateCarousel();
             });
             
-            // Previous button
+  
             prevBtn.addEventListener('click', () => {
                 currentIndex = (currentIndex - 1 + cards.length) % cards.length;
                 updateCarousel();
             });
             
-            // Dot navigation
+      
             dots.forEach(dot => {
                 dot.addEventListener('click', () => {
                     currentIndex = parseInt(dot.getAttribute('data-index'));
@@ -1018,7 +1017,7 @@
                 });
             });
             
-            // Auto-rotate every 5 seconds (optional)
+ 
             setInterval(() => {
                 currentIndex = (currentIndex + 1) % cards.length;
                 updateCarousel();
@@ -1027,7 +1026,7 @@
     </script>
 </body>
 </html>
-<!-- Add this section before your footer -->
+
 <section class="quiz-section">
   <h2 class="quiz-title">Angelicum Trivia Challenge</h2>
   <div id="quiz-container">
@@ -1044,7 +1043,7 @@
 </section>
 
 <style>
-  /* Quiz Styles - Matches Your Theme */
+
   .quiz-section {
     background: var(--card-bg);
     padding: 2rem;
@@ -1139,7 +1138,7 @@
 </style>
 
 <script>
-  // Quiz Questions - Converted from your existing trivia
+
   const quizQuestions = [
     {
       question: "What made Angelicum's educational system unique when it was founded?",
@@ -1193,19 +1192,19 @@
     }
   ];
 
-  // Quiz Variables
+
   let currentQuestion = 0;
   let score = 0;
   let selectedOption = null;
 
-  // DOM Elements
+
   const questionEl = document.getElementById('question');
   const optionsEl = document.getElementById('options');
   const resultEl = document.getElementById('result');
   const nextBtn = document.getElementById('next-btn');
   const scoreEl = document.querySelector('#score span');
 
-  // Initialize Quiz
+
   function loadQuestion() {
     const q = quizQuestions[currentQuestion];
     questionEl.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
@@ -1224,7 +1223,6 @@
     selectedOption = null;
   }
 
-  // Handle Answer Selection
   function selectAnswer(index) {
     if (selectedOption !== null) return;
     
@@ -1254,7 +1252,7 @@
     nextBtn.style.display = 'inline-block';
   }
 
-  // Next Question or Show Results
+
   nextBtn.addEventListener('click', () => {
     currentQuestion++;
     if (currentQuestion < quizQuestions.length) {
@@ -1264,7 +1262,7 @@
     }
   });
 
-  // Display Final Results
+
   function showResults() {
     const percentage = Math.round((score / quizQuestions.length) * 100);
     let message = '';
@@ -1287,16 +1285,15 @@
     nextBtn.style.display = 'none';
   }
 
-  // Start Quiz
   document.addEventListener('DOMContentLoaded', loadQuestion);
 </script>
     <footer>
-        <p>© 2024 Trivia-Ange | UST Angelicum College Trivia Collection</p>
+        <p>© 2025 Trivia-Ange | UST Angelicum College Trivia Collection</p>
         <p>All information is presented for educational purposes only</p>
     </footer>
 
     <script>
-        // Theme switching functionality
+
         function toggleThemePalette() {
             document.getElementById('themePalette').classList.toggle('show');
         }
@@ -1307,12 +1304,12 @@
             toggleThemePalette();
         }
 
-        // Load saved theme
+
         document.addEventListener('DOMContentLoaded', function() {
             const savedTheme = localStorage.getItem('selectedTheme') || 'light';
             changeTheme(savedTheme);
             
-            // Trivia card functionality
+
             const cards = document.querySelectorAll('.trivia-card');
             const nextBtn = document.getElementById('nextFact');
             let currentIndex = 0;
