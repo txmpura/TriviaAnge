@@ -6,18 +6,66 @@
     <title>Trivia-Ange | UST Angelicum College</title>
     <style>
         :root {
+            /* Default Theme (Light) */
             --dominican-blue: #0056b3;
             --dominican-gold: #FFD700;
             --light-blue: #e6f0fa;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --card-bg: white;
         }
+
+        /* Theme Selector Styles */
+        .theme-selector {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        
+        .theme-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+        
+        .theme-button:hover {
+            transform: scale(1.2);
+        }
+        
+        .theme-palette {
+            display: none;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            position: absolute;
+            bottom: 40px;
+            right: 0;
+            width: 250px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .theme-palette.show {
+            display: flex;
+        }
+
+        /* Base Styles */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f8f9fa;
-            color: #333;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             line-height: 1.6;
+            transition: all 0.3s ease;
         }
+
         header {
             background: linear-gradient(135deg, var(--dominican-blue), #003366);
             color: white;
@@ -26,6 +74,7 @@
             position: relative;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
+
         .header-content {
             display: flex;
             flex-direction: column;
@@ -34,6 +83,7 @@
             margin: 0 auto;
             padding: 0 20px;
         }
+
         .logo-container {
             display: flex;
             align-items: center;
@@ -42,28 +92,33 @@
             margin-bottom: 15px;
             flex-wrap: wrap;
         }
+
         .school-logo {
             height: 80px;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
+
         header h1 {
             margin: 10px 0 5px 0;
             font-size: 3rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
+
         header p {
             font-style: italic;
             opacity: 0.9;
             font-size: 1.2rem;
             margin-top: 10px;
         }
+
         .container {
             max-width: 800px;
             margin: 2rem auto;
             padding: 0 20px;
         }
+
         .trivia-card {
-            background: white;
+            background: var(--card-bg);
             border-left: 5px solid var(--dominican-gold);
             padding: 1.8rem;
             margin: 2rem 0;
@@ -71,7 +126,13 @@
             border-radius: 0 8px 8px 0;
             position: relative;
             overflow: hidden;
+            display: none;
         }
+
+        .trivia-card.active {
+            display: block;
+        }
+
         .trivia-card::before {
             content: "";
             position: absolute;
@@ -83,11 +144,13 @@
             opacity: 0.3;
             z-index: -1;
         }
+
         .trivia-card h3 {
             color: var(--dominican-blue);
             margin-top: 0;
             font-size: 1.4rem;
         }
+
         .trivia-number {
             background: var(--dominican-gold);
             color: var(--dominican-blue);
@@ -103,6 +166,7 @@
             left: -10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
+
         .mascot-image {
             max-width: 200px;
             display: block;
@@ -111,6 +175,7 @@
             border: 3px solid var(--dominican-gold);
             box-shadow: 0 3px 6px rgba(0,0,0,0.1);
         }
+
         footer {
             background-color: var(--dominican-blue);
             color: white;
@@ -118,19 +183,117 @@
             padding: 2rem;
             margin-top: 3rem;
         }
+
         .general-info {
-            background: white;
+            background: var(--card-bg);
             padding: 2rem;
             margin: 3rem 0;
             border-radius: 8px;
             box-shadow: 0 3px 10px rgba(0,0,0,0.08);
         }
+
         .general-info h2 {
             color: var(--dominican-blue);
             border-bottom: 2px solid var(--dominican-gold);
             padding-bottom: 0.5rem;
         }
+
+        #nextFact {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: var(--dominican-gold);
+            color: var(--dominican-blue);
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        #nextFact:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* ===== TIMELINE STYLES ===== */
+        .timeline-section {
+            margin: 3rem 0;
+            padding: 2rem 0;
+        }
+
+        .timeline-title {
+            color: var(--dominican-blue);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            border-bottom: 2px solid var(--dominican-gold);
+            padding-bottom: 0.5rem;
+        }
+
+        .timeline-container {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: var(--dominican-gold);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            width: 50%;
+            padding: 1.5rem;
+            box-sizing: border-box;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            text-align: left;
+        }
+
+        .timeline-year {
+            font-weight: bold;
+            color: var(--dominican-blue);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-left: 3px solid var(--dominican-blue);
+        }
+
         @media (max-width: 768px) {
+            .timeline-container::before {
+                left: 30px;
+            }
+            .timeline-item {
+                width: 100%;
+                left: 0 !important;
+                padding-left: 70px;
+                padding-right: 20px;
+                text-align: left !important;
+            }
             header h1 {
                 font-size: 2rem;
             }
@@ -148,9 +311,445 @@
                 padding: 1.2rem;
             }
         }
+
+        /* ===== ALL 30 THEMES ===== */
+        body.light-theme {
+            --dominican-blue: #0056b3;
+            --dominican-gold: #FFD700;
+            --light-blue: #e6f0fa;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --card-bg: white;
+        }
+
+        body.pastel-theme {
+            --dominican-blue: #89C4FF;
+            --dominican-gold: #FFD3B6;
+            --light-blue: #D4F1F9;
+            --bg-color: #FFF9F9;
+            --text-color: #555;
+            --card-bg: #ffffff;
+        }
+
+        body.vintage-theme {
+            --dominican-blue: #5D4E60;
+            --dominican-gold: #D4A59A;
+            --light-blue: #E3DCCB;
+            --bg-color: #F4EDE4;
+            --text-color: #3E3E3E;
+            --card-bg: #F8F4E9;
+        }
+
+        body.retro-theme {
+            --dominican-blue: #FF6B6B;
+            --dominican-gold: #FFD166;
+            --light-blue: #06D6A0;
+            --bg-color: #F7FFF7;
+            --text-color: #333;
+            --card-bg: #ffffff;
+        }
+
+        body.neon-theme {
+            --dominican-blue: #0FF0FC;
+            --dominican-gold: #FF00FF;
+            --light-blue: #00FF87;
+            --bg-color: #0C1021;
+            --text-color: #FFFFFF;
+            --card-bg: #1A1D2E;
+        }
+
+        body.gold-theme {
+            --dominican-blue: #2C2416;
+            --dominican-gold: #D4AF37;
+            --light-blue: #E8E8D8;
+            --bg-color: #F5F5F0;
+            --text-color: #333;
+            --card-bg: #ffffff;
+        }
+
+        body.dark-theme {
+            --dominican-blue: #4A89DC;
+            --dominican-gold: #F5D76E;
+            --light-blue: #2A3A4A;
+            --bg-color: #121212;
+            --text-color: #f0f0f0;
+            --card-bg: #1e1e1e;
+        }
+
+        body.warm-theme {
+            --dominican-blue: #E74C3C;
+            --dominican-gold: #F39C12;
+            --light-blue: #FDEBD0;
+            --bg-color: #FADBD8;
+            --text-color: #5D4037;
+            --card-bg: #ffffff;
+        }
+
+        body.cold-theme {
+            --dominican-blue: #3498DB;
+            --dominican-gold: #AED6F1;
+            --light-blue: #EBF5FB;
+            --bg-color: #F5F9FC;
+            --text-color: #2C3E50;
+            --card-bg: #ffffff;
+        }
+
+        body.summer-theme {
+            --dominican-blue: #1ABC9C;
+            --dominican-gold: #F1C40F;
+            --light-blue: #D6EAF8;
+            --bg-color: #FEF9E7;
+            --text-color: #21618C;
+            --card-bg: #ffffff;
+        }
+
+        body.fall-theme {
+            --dominican-blue: #8B4513;
+            --dominican-gold: #D35400;
+            --light-blue: #EDBB99;
+            --bg-color: #F5CBA7;
+            --text-color: #5D4037;
+            --card-bg: #ffffff;
+        }
+
+        body.winter-theme {
+            --dominican-blue: #5DADE2;
+            --dominican-gold: #FFFFFF;
+            --light-blue: #EAF2F8;
+            --bg-color: #F8F9F9;
+            --text-color: #2C3E50;
+            --card-bg: #ffffff;
+        }
+
+        body.spring-theme {
+            --dominican-blue: #58D68D;
+            --dominican-gold: #F4D03F;
+            --light-blue: #D5F5E3;
+            --bg-color: #F9F9F9;
+            --text-color: #1E8449;
+            --card-bg: #ffffff;
+        }
+
+        body.happy-theme {
+            --dominican-blue: #9B59B6;
+            --dominican-gold: #F1C40F;
+            --light-blue: #AED6F1;
+            --bg-color: #FDEBD0;
+            --text-color: #7D3C98;
+            --card-bg: #ffffff;
+        }
+
+        body.nature-theme {
+            --dominican-blue: #2ECC71;
+            --dominican-gold: #8D6E63;
+            --light-blue: #D5F5E3;
+            --bg-color: #F1F8E9;
+            --text-color: #1E8449;
+            --card-bg: #ffffff;
+        }
+
+        body.earth-theme {
+            --dominican-blue: #7D6608;
+            --dominican-gold: #A04000;
+            --light-blue: #D2B4DE;
+            --bg-color: #EDBB99;
+            --text-color: #4A235A;
+            --card-bg: #ffffff;
+        }
+
+        body.night-theme {
+            --dominican-blue: #3498DB;
+            --dominican-gold: #F5B041;
+            --light-blue: #2C3E50;
+            --bg-color: #1A1A1A;
+            --text-color: #ECF0F1;
+            --card-bg: #2C3E50;
+        }
+
+        body.space-theme {
+            --dominican-blue: #9B59B6;
+            --dominican-gold: #F1C40F;
+            --light-blue: #2C3E50;
+            --bg-color: #1B2631;
+            --text-color: #ECF0F1;
+            --card-bg: #283747;
+        }
+
+        body.rainbow-theme {
+            --dominican-blue: #9C27B0;
+            --dominican-gold: #FF9800;
+            --light-blue: #E1BEE7;
+            --bg-color: #F3E5F5;
+            --text-color: #6A1B9A;
+            --card-bg: #ffffff;
+        }
+
+        body.gradient-theme {
+            --dominican-blue: #4776E6;
+            --dominican-gold: #8E54E9;
+            --light-blue: #DAD299;
+            --bg-color: #F0F2F0;
+            --text-color: #333;
+            --card-bg: #ffffff;
+        }
+
+        body.sunset-theme {
+            --dominican-blue: #E74C3C;
+            --dominican-gold: #F39C12;
+            --light-blue: #F9E79F;
+            --bg-color: #FDEBD0;
+            --text-color: #922B21;
+            --card-bg: #ffffff;
+        }
+
+        body.sky-theme {
+            --dominican-blue: #3498DB;
+            --dominican-gold: #85C1E9;
+            --light-blue: #D6EAF8;
+            --bg-color: #EBF5FB;
+            --text-color: #2874A6;
+            --card-bg: #ffffff;
+        }
+
+        body.sea-theme {
+            --dominican-blue: #1ABC9C;
+            --dominican-gold: #D1F2EB;
+            --light-blue: #A3E4D7;
+            --bg-color: #E8F8F5;
+            --text-color: #0E6251;
+            --card-bg: #ffffff;
+        }
+
+        body.kids-theme {
+            --dominican-blue: #3498DB;
+            --dominican-gold: #F1C40F;
+            --light-blue: #AED6F1;
+            --bg-color: #FDEBD0;
+            --text-color: #21618C;
+            --card-bg: #ffffff;
+        }
+
+        body.skin-theme {
+            --dominican-blue: #D2B4DE;
+            --dominican-gold: #EDBB99;
+            --light-blue: #FADBD8;
+            --bg-color: #FDEDEC;
+            --text-color: #7D3C98;
+            --card-bg: #ffffff;
+        }
+
+        body.food-theme {
+            --dominican-blue: #E74C3C;
+            --dominican-gold: #F39C12;
+            --light-blue: #F9E79F;
+            --bg-color: #FDEDEC;
+            --text-color: #922B21;
+            --card-bg: #ffffff;
+        }
+
+        body.cream-theme {
+            --dominican-blue: #A1887F;
+            --dominican-gold: #D7CCC8;
+            --light-blue: #EFEBE9;
+            --bg-color: #FFF8E1;
+            --text-color: #5D4037;
+            --card-bg: #ffffff;
+        }
+
+        body.coffee-theme {
+            --dominican-blue: #5D4037;
+            --dominican-gold: #8D6E63;
+            --light-blue: #D7CCC8;
+            --bg-color: #EFEBE9;
+            --text-color: #3E2723;
+            --card-bg: #ffffff;
+        }
+
+        body.wedding-theme {
+            --dominican-blue: #9575CD;
+            --dominican-gold: #D1C4E9;
+            --light-blue: #EDE7F6;
+            --bg-color: #F3E5F5;
+            --text-color: #5E35B1;
+            --card-bg: #ffffff;
+        }
+
+        body.christmas-theme {
+            --dominican-blue: #2ECC71;
+            --dominican-gold: #E74C3C;
+            --light-blue: #FADBD8;
+            --bg-color: #F9F9F9;
+            --text-color: #1E8449;
+            --card-bg: #ffffff;
+        }
+
+        body.halloween-theme {
+            --dominican-blue: #8E44AD;
+            --dominican-gold: #F39C12;
+            --light-blue: #F5CBA7;
+            --bg-color: #FDEBD0;
+            --text-color: #6C3483;
+            --card-bg: #ffffff;
+        }
+    </style>
+</head>
+<style>
+        /* ===== ALUMNI CAROUSEL STYLES ===== */
+        .alumni-section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .alumni-title {
+            color: var(--dominican-blue);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            border-bottom: 2px solid var(--dominican-gold);
+            padding-bottom: 0.5rem;
+        }
+        
+        .alumni-carousel {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        
+        .alumni-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .alumni-card {
+            min-width: 100%;
+            padding: 1rem;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        
+        .alumni-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--dominican-gold);
+            margin: 0 auto 1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .alumni-name {
+            color: var(--dominican-blue);
+            font-size: 1.5rem;
+            margin: 0.5rem 0;
+        }
+        
+        .alumni-bio {
+            color: var(--text-color);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--light-blue);
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        
+        .carousel-dot.active {
+            background: var(--dominican-blue);
+        }
+        
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--dominican-gold);
+            color: var(--dominican-blue);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .carousel-arrow.prev {
+            left: 10px;
+        }
+        
+        .carousel-arrow.next {
+            right: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .alumni-image {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .carousel-arrow {
+                width: 30px;
+                height: 30px;
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
+<body class="light-theme">
+    <!-- Theme Selector -->
+    <div class="theme-selector">
+        <div class="theme-button" style="background: #0056b3;" onclick="toggleThemePalette()"></div>
+        <div class="theme-palette" id="themePalette">
+            <div class="theme-button" style="background: #f8f9fa;" onclick="changeTheme('light')" title="Light"></div>
+            <div class="theme-button" style="background: #89C4FF;" onclick="changeTheme('pastel')" title="Pastel"></div>
+            <div class="theme-button" style="background: #5D4E60;" onclick="changeTheme('vintage')" title="Vintage"></div>
+            <div class="theme-button" style="background: #FF6B6B;" onclick="changeTheme('retro')" title="Retro"></div>
+            <div class="theme-button" style="background: #0FF0FC;" onclick="changeTheme('neon')" title="Neon"></div>
+            <div class="theme-button" style="background: #D4AF37;" onclick="changeTheme('gold')" title="Gold"></div>
+            <div class="theme-button" style="background: #121212;" onclick="changeTheme('dark')" title="Dark"></div>
+            <div class="theme-button" style="background: #E74C3C;" onclick="changeTheme('warm')" title="Warm"></div>
+            <div class="theme-button" style="background: #3498DB;" onclick="changeTheme('cold')" title="Cold"></div>
+            <div class="theme-button" style="background: #1ABC9C;" onclick="changeTheme('summer')" title="Summer"></div>
+            <div class="theme-button" style="background: #8B4513;" onclick="changeTheme('fall')" title="Fall"></div>
+            <div class="theme-button" style="background: #5DADE2;" onclick="changeTheme('winter')" title="Winter"></div>
+            <div class="theme-button" style="background: #58D68D;" onclick="changeTheme('spring')" title="Spring"></div>
+            <div class="theme-button" style="background: #9B59B6;" onclick="changeTheme('happy')" title="Happy"></div>
+            <div class="theme-button" style="background: #2ECC71;" onclick="changeTheme('nature')" title="Nature"></div>
+            <div class="theme-button" style="background: #7D6608;" onclick="changeTheme('earth')" title="Earth"></div>
+            <div class="theme-button" style="background: #3498DB;" onclick="changeTheme('night')" title="Night"></div>
+            <div class="theme-button" style="background: #9B59B6;" onclick="changeTheme('space')" title="Space"></div>
+            <div class="theme-button" style="background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);" onclick="changeTheme('rainbow')" title="Rainbow"></div>
+            <div class="theme-button" style="background: #4776E6;" onclick="changeTheme('gradient')" title="Gradient"></div>
+            <div class="theme-button" style="background: #E74C3C;" onclick="changeTheme('sunset')" title="Sunset"></div>
+            <div class="theme-button" style="background: #3498DB;" onclick="changeTheme('sky')" title="Sky"></div>
+            <div class="theme-button" style="background: #1ABC9C;" onclick="changeTheme('sea')" title="Sea"></div>
+            <div class="theme-button" style="background: #3498DB;" onclick="changeTheme('kids')" title="Kids"></div>
+            <div class="theme-button" style="background: #D2B4DE;" onclick="changeTheme('skin')" title="Skin"></div>
+            <div class="theme-button" style="background: #E74C3C;" onclick="changeTheme('food')" title="Food"></div>
+            <div class="theme-button" style="background: #FFF8E1;" onclick="changeTheme('cream')" title="Cream"></div>
+            <div class="theme-button" style="background: #5D4037;" onclick="changeTheme('coffee')" title="Coffee"></div>
+            <div class="theme-button" style="background: #9575CD;" onclick="changeTheme('wedding')" title="Wedding"></div>
+            <div class="theme-button" style="background: #2ECC71;" onclick="changeTheme('christmas')" title="Christmas"></div>
+            <div class="theme-button" style="background: #8E44AD;" onclick="changeTheme('halloween')" title="Halloween"></div>
+        </div>
+    </div>
+
+    <!-- Rest of your HTML content remains exactly the same -->
     <header>
         <div class="header-content">
             <div class="logo-container">
@@ -163,76 +762,131 @@
     </header>
 
     <div class="container">
-        <!-- Trivia Card 1 -->
-        <div class="trivia-card">
+        <!-- Next Fact Button -->
+        <button id="nextFact">Next Fact</button>
+
+        <!-- Trivia Cards -->
+        <div class="trivia-card active">
             <div class="trivia-number">1</div>
             <h3>Non-Graded System</h3>
             <p>UST Angelicum was one of the first schools in the Philippines to adopt a non-graded system, meaning students progress based on mastery rather than traditional grade levels.</p>
         </div>
 
-        <!-- Trivia Card 2 -->
         <div class="trivia-card">
             <div class="trivia-number">2</div>
             <h3>Founded by a Dominican Priest</h3>
             <p>The school was established in 1972 by Fr. Rogelio B. Alarcon, O.P., a Dominican priest who wanted a more flexible and individualized approach to education.</p>
         </div>
 
-        <!-- Trivia Card 3 -->
         <div class="trivia-card">
             <div class="trivia-number">3</div>
             <h3>Connection to the Vatican's Angelicum University</h3>
             <p>The name "Angelicum" comes from the Pontifical University of Saint Thomas Aquinas (Angelicum) in Rome, a prestigious Dominican university where many Filipino priests, including some UST professors, have studied.</p>
         </div>
 
-        <!-- Trivia Card 4 -->
         <div class="trivia-card">
             <div class="trivia-number">4</div>
             <h3>Sarah Geronimo's Alma Mater</h3>
             <p>Pop superstar Sarah Geronimo studied here before transferring to another school. She remains one of its most famous alumni.</p>
         </div>
 
-        <!-- Trivia Card 5 -->
         <div class="trivia-card">
             <div class="trivia-number">5</div>
             <h3>No Numerical Grades Until College</h3>
             <p>In its basic education program, students receive descriptive evaluations (like "Proficient" or "Advancing") instead of traditional number grades. Numerical grades only appear in college.</p>
         </div>
 
-        <!-- Trivia Card 6 -->
         <div class="trivia-card">
             <div class="trivia-number">6</div>
             <h3>Bianca Bustamante, F1 Academy Racer</h3>
             <p>Bianca Bustamante, the first Filipina to race in the F1 Academy (a Formula 1 women's racing series), is an alumna of UST Angelicum.</p>
         </div>
 
-        <!-- Trivia Card 7 -->
         <div class="trivia-card">
             <div class="trivia-number">7</div>
             <h3>Formerly an All-Boys School</h3>
             <p>When it first opened in 1972, Angelicum was an all-boys school. It later became co-educational.</p>
         </div>
 
-        <!-- Trivia Card 8 -->
         <div class="trivia-card">
             <div class="trivia-number">8</div>
             <h3>UST Affiliation (But Independent Financially)</h3>
             <p>Despite being integrated with UST Manila in 2018, Angelicum still manages its own finances and operations, retaining its unique identity.</p>
         </div>
 
-        <!-- Trivia Card 9 -->
         <div class="trivia-card">
             <div class="trivia-number">9</div>
             <h3>No School Uniform Policy (Before)</h3>
             <p>Unlike most Catholic schools in the Philippines, Angelicum did not require uniforms for many years, promoting a more relaxed environment. However, policies may have changed since integration with UST.</p>
         </div>
 
-        <!-- Trivia Card 10 - With Mascot Image -->
         <div class="trivia-card">
             <div class="trivia-number">10</div>
             <h3>Home of the "Tigercubs" & "Roebucks"</h3>
             <p>The school's mascots are the Tigercubs (for younger students) and Roebucks (for older students), inspired by the Dominican tradition of using animals as symbols.</p>
             <!-- Mascot Image - Replace with your actual image -->
             <img src="images/mascot.png" alt="Angelicum Tigercub and Roebuck Mascots" class="mascot-image">
+        </div>
+
+        <!-- Timeline Section -->
+        <div class="timeline-section">
+            <h2 class="timeline-title">Angelicum Timeline</h2>
+            <div class="timeline-container">
+                <div class="timeline-item">
+                    <div class="timeline-year">1972</div>
+                    <div class="timeline-content">
+                        <p>Fr. Alarcon establishes Angelicum as the first non-graded school in the Philippines</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">1995</div>
+                    <div class="timeline-content">
+                        <p>Collegiate Department opens</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">May 1996</div>
+                    <div class="timeline-content">
+                        <p>Renamed Angelicum College</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">August 1996</div>
+                    <div class="timeline-content">
+                        <p>Home Study Program (HSP) granted recognition</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2004</div>
+                    <div class="timeline-content">
+                        <p>Rev. Fr. Herminio V. Dagohoy, O.P. becomes 9th Rector</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2016</div>
+                    <div class="timeline-content">
+                        <p>UST integration finalized. Jordan of Saxony building constructed</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2022</div>
+                    <div class="timeline-content">
+                        <p>Opening of A.Y. 2022-2023</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2024</div>
+                    <div class="timeline-content">
+                        <p>Higher Education Department (HED) begins academic year</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2025</div>
+                    <div class="timeline-content">
+                        <p>SHS Voucher Program applications open for SY 2025-2026</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- General Information Section -->
@@ -264,10 +918,412 @@
             <p><strong>Official website:</strong> <a href="http://www.ustangelicum.edu.ph" target="_blank">www.ustangelicum.edu.ph</a></p>
         </div>
     </div>
+<div class="alumni-section">
+        <h2 class="alumni-title">Notable Alumni Spotlight</h2>
+        <div class="alumni-carousel">
+            <button class="carousel-arrow prev">❮</button>
+            <button class="carousel-arrow next">❯</button>
+            
+            <div class="alumni-track">
+                <!-- Sarah Geronimo -->
+                <div class="alumni-card">
+                    <img src="images/sarah.png" alt="Sarah Geronimo" class="alumni-image">
+                    <h3 class="alumni-name">Sarah Geronimo</h3>
+                    <p class="alumni-title">Pop Superstar</p>
+                    <p class="alumni-bio">One of the most successful Filipino artists of all time, known as the "Popstar Royalty" of the Philippines.</p>
+                </div>
+                
+                <!-- Bernadette Sembrano -->
+                <div class="alumni-card">
+                    <img src="images/bernadette.png" alt="Bernadette Sembrano" class="alumni-image">
+                    <h3 class="alumni-name">Bernadette Sembrano</h3>
+                    <p class="alumni-title">Award-winning Journalist</p>
+                    <p class="alumni-bio">Veteran news anchor known for her work on ABS-CBN and ANC.</p>
+                </div>
+                
+                <!-- Antonio Trillanes -->
+                <div class="alumni-card">
+                    <img src="images/antonio.png" alt="Antonio Trillanes" class="alumni-image">
+                    <h3 class="alumni-name">Antonio Trillanes</h3>
+                    <p class="alumni-title">Former Senator</p>
+                    <p class="alumni-bio">Former Philippine Navy officer and senator known for his advocacy work.</p>
+                </div>
+                
+                <!-- Julie Anne San Jose -->
+                <div class="alumni-card">
+                    <img src="images/julie.png" alt="Julie Anne San Jose" class="alumni-image">
+                    <h3 class="alumni-name">Julie Anne San Jose</h3>
+                    <p class="alumni-title">Singer-Actress</p>
+                    <p class="alumni-bio">Multi-awarded performer known as GMA Network's "Ultimate Star".</p>
+                </div>
+                
+                <!-- Bianca Bustamante -->
+                <div class="alumni-card">
+                    <img src="images/bianca.png" alt="Bianca Bustamante" class="alumni-image">
+                    <h3 class="alumni-name">Bianca Bustamante</h3>
+                    <p class="alumni-title">Professional Racing Driver</p>
+                    <p class="alumni-bio">First Filipina to race in the F1 Academy, representing McLaren.</p>
+                </div>
+            </div>
+            
+            <div class="carousel-nav">
+                <div class="carousel-dot active" data-index="0"></div>
+                <div class="carousel-dot" data-index="1"></div>
+                <div class="carousel-dot" data-index="2"></div>
+                <div class="carousel-dot" data-index="3"></div>
+                <div class="carousel-dot" data-index="4"></div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Keep your existing footer -->
+
+    <script>
+        // Alumni Carousel Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const track = document.querySelector('.alumni-track');
+            const cards = document.querySelectorAll('.alumni-card');
+            const dots = document.querySelectorAll('.carousel-dot');
+            const prevBtn = document.querySelector('.carousel-arrow.prev');
+            const nextBtn = document.querySelector('.carousel-arrow.next');
+            let currentIndex = 0;
+            const cardWidth = cards[0].offsetWidth;
+            
+            function updateCarousel() {
+                track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+                
+                // Update dots
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentIndex);
+                });
+            }
+            
+            // Next button
+            nextBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % cards.length;
+                updateCarousel();
+            });
+            
+            // Previous button
+            prevBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+                updateCarousel();
+            });
+            
+            // Dot navigation
+            dots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    currentIndex = parseInt(dot.getAttribute('data-index'));
+                    updateCarousel();
+                });
+            });
+            
+            // Auto-rotate every 5 seconds (optional)
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % cards.length;
+                updateCarousel();
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
+<!-- Add this section before your footer -->
+<section class="quiz-section">
+  <h2 class="quiz-title">Angelicum Trivia Challenge</h2>
+  <div id="quiz-container">
+    <div id="question-container">
+      <div id="question" class="quiz-question"></div>
+      <div id="options" class="quiz-options"></div>
+    </div>
+    <div id="result" class="quiz-result"></div>
+    <div class="quiz-controls">
+      <button id="next-btn" class="quiz-button">Next Question</button>
+      <div id="score" class="quiz-score">Score: <span>0</span>/5</div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Quiz Styles - Matches Your Theme */
+  .quiz-section {
+    background: var(--card-bg);
+    padding: 2rem;
+    margin: 3rem 0;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  }
+  
+  .quiz-title {
+    color: var(--dominican-blue);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--dominican-gold);
+    padding-bottom: 0.5rem;
+  }
+  
+  .quiz-question {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    color: var(--dominican-blue);
+    font-weight: bold;
+  }
+  
+  .quiz-options {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+  
+  .quiz-option {
+    padding: 12px;
+    background: var(--light-blue);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-left: 3px solid var(--dominican-blue);
+  }
+  
+  .quiz-option:hover {
+    background: var(--dominican-gold);
+    color: var(--dominican-blue);
+    transform: translateX(5px);
+  }
+  
+  .quiz-option.correct {
+    background: #2ecc71;
+    color: white;
+  }
+  
+  .quiz-option.incorrect {
+    background: #e74c3c;
+    color: white;
+  }
+  
+  .quiz-button {
+    background: var(--dominican-gold);
+    color: var(--dominican-blue);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .quiz-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+  
+  .quiz-result {
+    min-height: 30px;
+    margin: 1rem 0;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .quiz-score {
+    font-size: 1.1rem;
+    color: var(--dominican-blue);
+  }
+  
+  .quiz-score span {
+    font-weight: bold;
+  }
+  
+  @media (max-width: 768px) {
+    .quiz-options {
+      gap: 8px;
+    }
+  }
+</style>
+
+<script>
+  // Quiz Questions - Converted from your existing trivia
+  const quizQuestions = [
+    {
+      question: "What made Angelicum's educational system unique when it was founded?",
+      options: [
+        "It was the first online school in PH",
+        "It used a non-graded system",
+        "It only taught religious studies"
+      ],
+      answer: 1,
+      fact: "Angelicum was the first non-graded school in the Philippines, allowing students to progress at their own pace."
+    },
+    {
+      question: "Which famous pop star attended Angelicum?",
+      options: [
+        "Regine Velasquez",
+        "Sarah Geronimo", 
+        "Lea Salonga"
+      ],
+      answer: 1,
+      fact: "Sarah Geronimo studied at Angelicum before becoming the Philippines' 'Popstar Royalty'."
+    },
+    {
+      question: "What are Angelicum's mascots called?",
+      options: [
+        "Eagles and Lions",
+        "Tigercubs and Roebucks",
+        "Saints and Angels"
+      ],
+      answer: 1,
+      fact: "The Tigercubs (younger students) and Roebucks (older students) reflect Dominican traditions."
+    },
+    {
+      question: "When did Angelicum officially merge with UST?",
+      options: [
+        "2005",
+        "2012",
+        "2018"
+      ],
+      answer: 2,
+      fact: "After years of discussion, the official merger happened in 2018 while retaining financial independence."
+    },
+    {
+      question: "Which of these notable alumni is a racing driver?",
+      options: [
+        "Antonio Trillanes",
+        "Bianca Bustamante",
+        "Julie Anne San Jose"
+      ],
+      answer: 1,
+      fact: "Bianca Bustamante made history as the first Filipina in the F1 Academy, racing for McLaren."
+    }
+  ];
+
+  // Quiz Variables
+  let currentQuestion = 0;
+  let score = 0;
+  let selectedOption = null;
+
+  // DOM Elements
+  const questionEl = document.getElementById('question');
+  const optionsEl = document.getElementById('options');
+  const resultEl = document.getElementById('result');
+  const nextBtn = document.getElementById('next-btn');
+  const scoreEl = document.querySelector('#score span');
+
+  // Initialize Quiz
+  function loadQuestion() {
+    const q = quizQuestions[currentQuestion];
+    questionEl.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
+    
+    optionsEl.innerHTML = '';
+    q.options.forEach((option, index) => {
+      const optionEl = document.createElement('div');
+      optionEl.classList.add('quiz-option');
+      optionEl.textContent = option;
+      optionEl.addEventListener('click', () => selectAnswer(index));
+      optionsEl.appendChild(optionEl);
+    });
+    
+    resultEl.textContent = '';
+    nextBtn.style.display = 'none';
+    selectedOption = null;
+  }
+
+  // Handle Answer Selection
+  function selectAnswer(index) {
+    if (selectedOption !== null) return;
+    
+    selectedOption = index;
+    const options = document.querySelectorAll('.quiz-option');
+    const correctIndex = quizQuestions[currentQuestion].answer;
+    
+    options.forEach((option, i) => {
+      if (i === correctIndex) {
+        option.classList.add('correct');
+      } else if (i === index && i !== correctIndex) {
+        option.classList.add('incorrect');
+      }
+      option.style.cursor = 'default';
+    });
+    
+    if (index === correctIndex) {
+      score++;
+      scoreEl.textContent = score;
+      resultEl.innerHTML = `<span style="color:#2ecc71">✓ Correct!</span><br><small>${quizQuestions[currentQuestion].fact}</small>`;
+    } else {
+      resultEl.innerHTML = `<span style="color:#e74c3c">✗ Incorrect.</span><br>
+                           <small>The correct answer is: <strong>${quizQuestions[currentQuestion].options[correctIndex]}</strong></small><br>
+                           <small>${quizQuestions[currentQuestion].fact}</small>`;
+    }
+    
+    nextBtn.style.display = 'inline-block';
+  }
+
+  // Next Question or Show Results
+  nextBtn.addEventListener('click', () => {
+    currentQuestion++;
+    if (currentQuestion < quizQuestions.length) {
+      loadQuestion();
+    } else {
+      showResults();
+    }
+  });
+
+  // Display Final Results
+  function showResults() {
+    const percentage = Math.round((score / quizQuestions.length) * 100);
+    let message = '';
+    
+    if (percentage >= 80) {
+      message = `🎉 Excellent! You scored ${percentage}%! You're an Angelicum expert!`;
+    } else if (percentage >= 50) {
+      message = `👍 Good job! ${percentage}% - You know your Angelicum trivia!`;
+    } else {
+      message = `📚 You scored ${percentage}%. Time to explore more Angelicum facts!`;
+    }
+    
+    questionEl.textContent = 'Quiz Completed!';
+    optionsEl.innerHTML = '';
+    resultEl.innerHTML = `
+      <h3>${message}</h3>
+      <p>You got ${score} out of ${quizQuestions.length} questions correct.</p>
+      <button onclick="location.reload()" class="quiz-button">Try Again</button>
+    `;
+    nextBtn.style.display = 'none';
+  }
+
+  // Start Quiz
+  document.addEventListener('DOMContentLoaded', loadQuestion);
+</script>
     <footer>
         <p>© 2024 Trivia-Ange | UST Angelicum College Trivia Collection</p>
         <p>All information is presented for educational purposes only</p>
     </footer>
+
+    <script>
+        // Theme switching functionality
+        function toggleThemePalette() {
+            document.getElementById('themePalette').classList.toggle('show');
+        }
+
+        function changeTheme(theme) {
+            document.body.className = theme + '-theme';
+            localStorage.setItem('selectedTheme', theme);
+            toggleThemePalette();
+        }
+
+        // Load saved theme
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('selectedTheme') || 'light';
+            changeTheme(savedTheme);
+            
+            // Trivia card functionality
+            const cards = document.querySelectorAll('.trivia-card');
+            const nextBtn = document.getElementById('nextFact');
+            let currentIndex = 0;
+
+            cards[currentIndex].classList.add('active');
+            nextBtn.addEventListener('click', function() {
+                cards[currentIndex].classList.remove('active');
+                currentIndex = (currentIndex + 1) % cards.length;
+                cards[currentIndex].classList.add('active');
+            });
+        });
+    </script>
 </body>
 </html>
