@@ -218,70 +218,33 @@
         }
 
         
-        .timeline-section {
-            margin: 3rem 0;
-            padding: 2rem 0;
-        }
+.timeline-section {
+    margin: 2rem 0;
+    padding: 1rem 0;
+}
 
-        .timeline-title {
-            color: var(--dominican-blue);
-            text-align: center;
-            margin-bottom: 2rem;
-            font-size: 2rem;
-            border-bottom: 2px solid var(--dominican-gold);
-            padding-bottom: 0.5rem;
-        }
+.timeline-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    padding: 15px 0;
+    scroll-snap-type: x mandatory;
+}
 
-        .timeline-container {
-            position: relative;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+.timeline-item {
+    flex: 0 0 300px;
+    scroll-snap-align: start;
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 1.2rem;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    border-top: 3px solid var(--dominican-gold);
+    transition: transform 0.3s;
+}
 
-        .timeline-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 100%;
-            background: var(--dominican-gold);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 3rem;
-            width: 50%;
-            padding: 1.5rem;
-            box-sizing: border-box;
-        }
-
-        .timeline-item:nth-child(odd) {
-            left: 0;
-            text-align: right;
-        }
-
-        .timeline-item:nth-child(even) {
-            left: 50%;
-            text-align: left;
-        }
-
-        .timeline-year {
-            font-weight: bold;
-            color: var(--dominican-blue);
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-content {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            border-left: 3px solid var(--dominican-blue);
-        }
+.timeline-item:hover {
+    transform: translateY(-5px);
+}
 
         @media (max-width: 768px) {
             .timeline-container::before {
@@ -707,6 +670,7 @@
                 font-size: 1rem;
             }
         }
+        
     </style>
 </head>
 <body>
@@ -762,7 +726,11 @@
 
     <div class="container">
 
-        <button id="nextFact">Next Fact</button>
+
+<div class="trivia-nav">
+
+    <button id="nextFact">Next</button>
+</div>
 
 
         <div class="trivia-card active">
@@ -828,15 +796,16 @@
         </div>
 
     
-        <div class="timeline-section">
-            <h2 class="timeline-title">Angelicum Timeline</h2>
-            <div class="timeline-container">
-                <div class="timeline-item">
-                    <div class="timeline-year">1972</div>
-                    <div class="timeline-content">
-                        <p>Fr. Alarcon establishes Angelicum as the first non-graded school in the Philippines</p>
-                    </div>
-                </div>
+<div class="timeline-section">
+    <h2 class="timeline-title">Angelicum Journey Through Time</h2>
+    <div class="timeline-container">
+        <div class="timeline-item">
+            <div class="timeline-year">1972</div>
+            <div class="timeline-content">
+                <p>Fr. Alarcon establishes Angelicum as the first non-graded school in the Philippines</p>
+                <div class="timeline-detail">Started with just 35 students</div>
+            </div>
+        </div>
                 <div class="timeline-item">
                     <div class="timeline-year">1995</div>
                     <div class="timeline-content">
@@ -977,53 +946,50 @@
 
 
 
-    <script>
-    
-        document.addEventListener('DOMContentLoaded', function() {
-            const track = document.querySelector('.alumni-track');
-            const cards = document.querySelectorAll('.alumni-card');
-            const dots = document.querySelectorAll('.carousel-dot');
-            const prevBtn = document.querySelector('.carousel-arrow.prev');
-            const nextBtn = document.querySelector('.carousel-arrow.next');
-            let currentIndex = 0;
-            const cardWidth = cards[0].offsetWidth;
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const track = document.querySelector('.alumni-track');
+        const cards = document.querySelectorAll('.alumni-card');
+        const dots = document.querySelectorAll('.carousel-dot');
+        const prevBtn = document.querySelector('.carousel-arrow.prev');
+        const nextBtn = document.querySelector('.carousel-arrow.next');
+        let currentIndex = 0;
+        const cardWidth = cards[0].offsetWidth;
+        
+        function updateCarousel() {
+            track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
             
-            function updateCarousel() {
-                track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
-                
-
-                dots.forEach((dot, index) => {
-                    dot.classList.toggle('active', index === currentIndex);
-                });
-            }
-            
-
-            nextBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex + 1) % cards.length;
-                updateCarousel();
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
             });
-            
-  
-            prevBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex - 1 + cards.length) % cards.length;
-                updateCarousel();
-            });
-            
-      
-            dots.forEach(dot => {
-                dot.addEventListener('click', () => {
-                    currentIndex = parseInt(dot.getAttribute('data-index'));
-                    updateCarousel();
-                });
-            });
-            
- 
-            setInterval(() => {
-                currentIndex = (currentIndex + 1) % cards.length;
-                updateCarousel();
-            }, 5000);
+        }
+        
+        // Next button click handler
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % cards.length;
+            updateCarousel();
         });
-    </script>
+        
+        // Previous button click handler
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+            updateCarousel();
+        });
+        
+        // Dot indicators click handler
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                currentIndex = parseInt(dot.getAttribute('data-index'));
+                updateCarousel();
+            });
+        });
+        
+        // Initialize carousel
+        updateCarousel();
+        
+        /* REMOVED the auto-scroll interval completely */
+    });
+</script>
 </body>
 </html>
 
@@ -1037,7 +1003,7 @@
     <div id="result" class="quiz-result"></div>
     <div class="quiz-controls">
       <button id="next-btn" class="quiz-button">Next Question</button>
-      <div id="score" class="quiz-score">Score: <span>0</span>/5</div>
+      <div id="score" class="quiz-score">Score: <span>0</span>/15</div>
     </div>
   </div>
 </section>
@@ -1141,6 +1107,7 @@
 
   const quizQuestions = [
     {
+    
       question: "What made Angelicum's educational system unique when it was founded?",
       options: [
         "It was the first online school in PH",
@@ -1189,8 +1156,108 @@
       ],
       answer: 1,
       fact: "Bianca Bustamante made history as the first Filipina in the F1 Academy, racing for McLaren."
+   },
+    {
+        question: "Which Dominican saint is featured in the USTAC logo?",
+        options: [
+            "St. Thomas Aquinas",
+            "St. Dominic de Guzman",
+            "St. Martin de Porres"
+        ],
+        answer: 0,
+        fact: "St. Thomas Aquinas, the 'Angelic Doctor', is featured as he's the patron of all Dominican schools."
+    },
+    {
+        question: "What does the 'OP' stand for in Fr. Rogelio Alarcon, OP?",
+        options: [
+            "Order of Preachers",
+            "Official Priest",
+            "Ordained Pastor"
+        ],
+        answer: 0,
+        fact: "OP stands for 'Ordo Praedicatorum' - the Latin name for the Order of Preachers (Dominicans)."
+    },
+    {
+        question: "Which of these is NOT one of the Dominican mottos?",
+        options: [
+            "Veritas (Truth)",
+            "Caritas (Charity)",
+            "Gloria (Glory)"
+        ],
+        answer: 2,
+        fact: "The core Dominican mottos are Veritas (Truth) and Caritas (Charity)."
+    },
+    {
+        question: "What color do Dominican priests wear?",
+        options: [
+            "Black and white",
+            "Blue and gold",
+            "Brown and white"
+        ],
+        answer: 0,
+        fact: "Dominicans wear a white habit with black cape (cappa) - representing purity and penance."
+    },
+    {
+        question: "Which famous Dominican institution is Angelicum's namesake?",
+        options: [
+            "Angelicum University in Rome",
+            "University of Santo Tomas in Manila",
+            "St. Dominic's University in Bologna"
+        ],
+        answer: 0,
+        fact: "It's named after the Pontifical University of St. Thomas Aquinas (Angelicum) in Rome."
+    },
+    {
+        question: "What animal symbolizes Dominican missionaries?",
+        options: [
+            "Dogs carrying torches",
+            "Lions with crosses",
+            "Eagles with books"
+        ],
+        answer: 0,
+        fact: "From St. Dominic's mother's dream of dogs with torches - symbolizing spreading light/truth."
+    },
+    {
+        question: "Which Dominican tradition does USTAC's Roebuck mascot reference?",
+        options: [
+            "St. Dominic's vision of deer",
+            "St. Thomas's love for nature",
+            "St. Martin's miraculous animals"
+        ],
+        answer: 0,
+        fact: "The roebuck (deer) connects to St. Dominic's spiritual visions involving deer."
+    },
+    {
+        question: "How many Dominican pillars of education does USTAC follow?",
+        options: [
+            "Four",
+            "Three",
+            "Five"
+        ],
+        answer: 0,
+        fact: "The four pillars are: Prayer, Study, Community, and Service."
+    },
+    {
+        question: "Which Dominican saint is known as the 'Mozart of Theology'?",
+        options: [
+            "St. Thomas Aquinas",
+            "St. Albert the Great",
+            "St. Vincent Ferrer"
+        ],
+        answer: 1,
+        fact: "St. Albert the Great was called this for his encyclopedic theological knowledge."
+    },
+    {
+        question: "What unique feature did original Angelicum classrooms have?",
+        options: [
+            "No front-facing teacher's desk",
+            "Circular seating arrangements",
+            "No blackboards/whiteboards"
+        ],
+        answer: 1,
+        fact: "Reflecting its progressive roots, it used circular seating to encourage discussion."
     }
-  ];
+];
 
 
   let currentQuestion = 0;
@@ -1321,6 +1388,7 @@
                 cards[currentIndex].classList.add('active');
             });
         });
+        
     </script>
 </body>
 </html>
