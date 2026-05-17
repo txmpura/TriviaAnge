@@ -1,1394 +1,357 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trivia-Ange | UST Angelicum College</title>
-    <style>
-        :root {
-       
-            --dominican-blue: #0056b3;
-            --dominican-gold: #FFD700;
-            --light-blue: #e6f0fa;
-            --bg-color: #f8f9fa;
-            --text-color: #333;
-            --card-bg: white;
-        }
-
-   
-        .theme-selector {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 100;
-        }
-        
-        .theme-button {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: 2px solid white;
-            cursor: pointer;
-            margin: 5px;
-            transition: transform 0.2s;
-        }
-        
-        .theme-button:hover {
-            transform: scale(1.2);
-        }
-        
-        .theme-palette {
-            display: none;
-            background: white;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
-            position: absolute;
-            bottom: 40px;
-            right: 0;
-            width: 250px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .theme-palette.show {
-            display: flex;
-        }
-
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            transition: all 0.3s ease;
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--dominican-blue), #003366);
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .header-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-
-        .school-logo {
-            height: 80px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-        }
-
-        header h1 {
-            margin: 10px 0 5px 0;
-            font-size: 3rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        header p {
-            font-style: italic;
-            opacity: 0.9;
-            font-size: 1.2rem;
-            margin-top: 10px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 0 20px;
-        }
-
-        .trivia-card {
-            background: var(--card-bg);
-            border-left: 5px solid var(--dominican-gold);
-            padding: 1.8rem;
-            margin: 2rem 0;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-            border-radius: 0 8px 8px 0;
-            position: relative;
-            overflow: hidden;
-            display: none;
-        }
-
-        .trivia-card.active {
-            display: block;
-        }
-
-        .trivia-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--light-blue);
-            opacity: 0.3;
-            z-index: -1;
-        }
-
-        .trivia-card h3 {
-            color: var(--dominican-blue);
-            margin-top: 0;
-            font-size: 1.4rem;
-        }
-
-        .trivia-number {
-            background: var(--dominican-gold);
-            color: var(--dominican-blue);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .mascot-image {
-            max-width: 200px;
-            display: block;
-            margin: 15px auto;
-            border-radius: 8px;
-            border: 3px solid var(--dominican-gold);
-            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-        }
-
-        footer {
-            background-color: var(--dominican-blue);
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 3rem;
-        }
-
-        .general-info {
-            background: var(--card-bg);
-            padding: 2rem;
-            margin: 3rem 0;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-        }
-
-        .general-info h2 {
-            color: var(--dominican-blue);
-            border-bottom: 2px solid var(--dominican-gold);
-            padding-bottom: 0.5rem;
-        }
-
-        #nextFact {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background-color: var(--dominican-gold);
-            color: var(--dominican-blue);
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        #nextFact:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        
-.timeline-section {
-    margin: 2rem 0;
-    padding: 1rem 0;
-}
-
-.timeline-container {
-    display: flex;
-    overflow-x: auto;
-    gap: 15px;
-    padding: 15px 0;
-    scroll-snap-type: x mandatory;
-}
-
-.timeline-item {
-    flex: 0 0 300px;
-    scroll-snap-align: start;
-    background: var(--card-bg);
-    border-radius: 8px;
-    padding: 1.2rem;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-    border-top: 3px solid var(--dominican-gold);
-    transition: transform 0.3s;
-}
-
-.timeline-item:hover {
-    transform: translateY(-5px);
-}
-
-        @media (max-width: 768px) {
-            .timeline-container::before {
-                left: 30px;
-            }
-            .timeline-item {
-                width: 100%;
-                left: 0 !important;
-                padding-left: 70px;
-                padding-right: 20px;
-                text-align: left !important;
-            }
-            header h1 {
-                font-size: 2rem;
-            }
-            .logo-container {
-                flex-direction: column;
-                gap: 10px;
-            }
-            .school-logo {
-                height: 60px;
-            }
-            .container {
-                padding: 0 15px;
-            }
-            .trivia-card {
-                padding: 1.2rem;
-            }
-        }
-
-      
-        body.light-theme {
-            --dominican-blue: #0056b3;
-            --dominican-gold: #FFD700;
-            --light-blue: #e6f0fa;
-            --bg-color: #f8f9fa;
-            --text-color: #333;
-            --card-bg: white;
-        }
-
-        body.pastel-theme {
-            --dominican-blue: #89C4FF;
-            --dominican-gold: #FFD3B6;
-            --light-blue: #D4F1F9;
-            --bg-color: #FFF9F9;
-            --text-color: #555;
-            --card-bg: #ffffff;
-        }
-
-        body.vintage-theme {
-            --dominican-blue: #5D4E60;
-            --dominican-gold: #D4A59A;
-            --light-blue: #E3DCCB;
-            --bg-color: #F4EDE4;
-            --text-color: #3E3E3E;
-            --card-bg: #F8F4E9;
-        }
-
-        body.retro-theme {
-            --dominican-blue: #FF6B6B;
-            --dominican-gold: #FFD166;
-            --light-blue: #06D6A0;
-            --bg-color: #F7FFF7;
-            --text-color: #333;
-            --card-bg: #ffffff;
-        }
-
-        body.neon-theme {
-            --dominican-blue: #0FF0FC;
-            --dominican-gold: #FF00FF;
-            --light-blue: #00FF87;
-            --bg-color: #0C1021;
-            --text-color: #FFFFFF;
-            --card-bg: #1A1D2E;
-        }
-
-        body.gold-theme {
-            --dominican-blue: #2C2416;
-            --dominican-gold: #D4AF37;
-            --light-blue: #E8E8D8;
-            --bg-color: #F5F5F0;
-            --text-color: #333;
-            --card-bg: #ffffff;
-        }
-
-        body.dark-theme {
-            --dominican-blue: #4A89DC;
-            --dominican-gold: #F5D76E;
-            --light-blue: #2A3A4A;
-            --bg-color: #121212;
-            --text-color: #f0f0f0;
-            --card-bg: #1e1e1e;
-        }
-
-        body.warm-theme {
-            --dominican-blue: #E74C3C;
-            --dominican-gold: #F39C12;
-            --light-blue: #FDEBD0;
-            --bg-color: #FADBD8;
-            --text-color: #5D4037;
-            --card-bg: #ffffff;
-        }
-
-        body.cold-theme {
-            --dominican-blue: #3498DB;
-            --dominican-gold: #AED6F1;
-            --light-blue: #EBF5FB;
-            --bg-color: #F5F9FC;
-            --text-color: #2C3E50;
-            --card-bg: #ffffff;
-        }
-
-        body.summer-theme {
-            --dominican-blue: #1ABC9C;
-            --dominican-gold: #F1C40F;
-            --light-blue: #D6EAF8;
-            --bg-color: #FEF9E7;
-            --text-color: #21618C;
-            --card-bg: #ffffff;
-        }
-
-        body.fall-theme {
-            --dominican-blue: #8B4513;
-            --dominican-gold: #D35400;
-            --light-blue: #EDBB99;
-            --bg-color: #F5CBA7;
-            --text-color: #5D4037;
-            --card-bg: #ffffff;
-        }
-
-        body.winter-theme {
-            --dominican-blue: #5DADE2;
-            --dominican-gold: #FFFFFF;
-            --light-blue: #EAF2F8;
-            --bg-color: #F8F9F9;
-            --text-color: #2C3E50;
-            --card-bg: #ffffff;
-        }
-
-        body.spring-theme {
-            --dominican-blue: #58D68D;
-            --dominican-gold: #F4D03F;
-            --light-blue: #D5F5E3;
-            --bg-color: #F9F9F9;
-            --text-color: #1E8449;
-            --card-bg: #ffffff;
-        }
-
-        body.happy-theme {
-            --dominican-blue: #9B59B6;
-            --dominican-gold: #F1C40F;
-            --light-blue: #AED6F1;
-            --bg-color: #FDEBD0;
-            --text-color: #7D3C98;
-            --card-bg: #ffffff;
-        }
-
-        body.nature-theme {
-            --dominican-blue: #2ECC71;
-            --dominican-gold: #8D6E63;
-            --light-blue: #D5F5E3;
-            --bg-color: #F1F8E9;
-            --text-color: #1E8449;
-            --card-bg: #ffffff;
-        }
-
-        body.earth-theme {
-            --dominican-blue: #7D6608;
-            --dominican-gold: #A04000;
-            --light-blue: #D2B4DE;
-            --bg-color: #EDBB99;
-            --text-color: #4A235A;
-            --card-bg: #ffffff;
-        }
-
-        body.night-theme {
-            --dominican-blue: #3498DB;
-            --dominican-gold: #F5B041;
-            --light-blue: #2C3E50;
-            --bg-color: #1A1A1A;
-            --text-color: #ECF0F1;
-            --card-bg: #2C3E50;
-        }
-
-        body.space-theme {
-            --dominican-blue: #9B59B6;
-            --dominican-gold: #F1C40F;
-            --light-blue: #2C3E50;
-            --bg-color: #1B2631;
-            --text-color: #ECF0F1;
-            --card-bg: #283747;
-        }
-
-        body.rainbow-theme {
-            --dominican-blue: #9C27B0;
-            --dominican-gold: #FF9800;
-            --light-blue: #E1BEE7;
-            --bg-color: #F3E5F5;
-            --text-color: #6A1B9A;
-            --card-bg: #ffffff;
-        }
-
-        body.gradient-theme {
-            --dominican-blue: #4776E6;
-            --dominican-gold: #8E54E9;
-            --light-blue: #DAD299;
-            --bg-color: #F0F2F0;
-            --text-color: #333;
-            --card-bg: #ffffff;
-        }
-
-        body.sunset-theme {
-            --dominican-blue: #E74C3C;
-            --dominican-gold: #F39C12;
-            --light-blue: #F9E79F;
-            --bg-color: #FDEBD0;
-            --text-color: #922B21;
-            --card-bg: #ffffff;
-        }
-
-        body.sky-theme {
-            --dominican-blue: #3498DB;
-            --dominican-gold: #85C1E9;
-            --light-blue: #D6EAF8;
-            --bg-color: #EBF5FB;
-            --text-color: #2874A6;
-            --card-bg: #ffffff;
-        }
-
-        body.sea-theme {
-            --dominican-blue: #1ABC9C;
-            --dominican-gold: #D1F2EB;
-            --light-blue: #A3E4D7;
-            --bg-color: #E8F8F5;
-            --text-color: #0E6251;
-            --card-bg: #ffffff;
-        }
-
-        body.kids-theme {
-            --dominican-blue: #3498DB;
-            --dominican-gold: #F1C40F;
-            --light-blue: #AED6F1;
-            --bg-color: #FDEBD0;
-            --text-color: #21618C;
-            --card-bg: #ffffff;
-        }
-
-        body.skin-theme {
-            --dominican-blue: #D2B4DE;
-            --dominican-gold: #EDBB99;
-            --light-blue: #FADBD8;
-            --bg-color: #FDEDEC;
-            --text-color: #7D3C98;
-            --card-bg: #ffffff;
-        }
-
-        body.food-theme {
-            --dominican-blue: #E74C3C;
-            --dominican-gold: #F39C12;
-            --light-blue: #F9E79F;
-            --bg-color: #FDEDEC;
-            --text-color: #922B21;
-            --card-bg: #ffffff;
-        }
-
-        body.cream-theme {
-            --dominican-blue: #A1887F;
-            --dominican-gold: #D7CCC8;
-            --light-blue: #EFEBE9;
-            --bg-color: #FFF8E1;
-            --text-color: #5D4037;
-            --card-bg: #ffffff;
-        }
-
-        body.coffee-theme {
-            --dominican-blue: #5D4037;
-            --dominican-gold: #8D6E63;
-            --light-blue: #D7CCC8;
-            --bg-color: #EFEBE9;
-            --text-color: #3E2723;
-            --card-bg: #ffffff;
-        }
-
-        body.wedding-theme {
-            --dominican-blue: #9575CD;
-            --dominican-gold: #D1C4E9;
-            --light-blue: #EDE7F6;
-            --bg-color: #F3E5F5;
-            --text-color: #5E35B1;
-            --card-bg: #ffffff;
-        }
-
-        body.christmas-theme {
-            --dominican-blue: #2ECC71;
-            --dominican-gold: #E74C3C;
-            --light-blue: #FADBD8;
-            --bg-color: #F9F9F9;
-            --text-color: #1E8449;
-            --card-bg: #ffffff;
-        }
-
-        body.halloween-theme {
-            --dominican-blue: #8E44AD;
-            --dominican-gold: #F39C12;
-            --light-blue: #F5CBA7;
-            --bg-color: #FDEBD0;
-            --text-color: #6C3483;
-            --card-bg: #ffffff;
-        }
-    </style>
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finals Reviewer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --bg:#090b13; --card:#111423; --card2:#191d31; --border:#252a45;
+    --accent1:#7c6af7; --accent2:#4fd8c4; --accent3:#f7a26a;
+    --correct:#3ecf8e; --wrong:#f26c6c; --text:#e8eaf0; --muted:#6b7296;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+  header{width:100%;padding:1.8rem 2rem 1.2rem;text-align:center;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#111327 0%,transparent 100%)}
+  header h1{font-family:'Syne',sans-serif;font-size:clamp(1.3rem,4vw,2rem);font-weight:800;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  header p{color:var(--muted);font-size:.85rem;margin-top:.3rem}
+  #progress-wrap{width:100%;max-width:700px;padding:1.2rem 1.5rem 0}
+  #progress-label{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-bottom:.5rem;font-family:'Syne',sans-serif;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+  #progress-bar-bg{width:100%;height:6px;background:var(--border);border-radius:99px;overflow:hidden}
+  #progress-bar{height:100%;background:linear-gradient(90deg,var(--accent1),var(--accent2));border-radius:99px;transition:width .4s ease;width:0%}
+  #score-ribbon{width:100%;max-width:700px;display:flex;gap:.8rem;padding:.9rem 1.5rem 0}
+  .ribbon-chip{flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.6rem .8rem;text-align:center}
+  .ribbon-chip span{display:block;font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-family:'Syne',sans-serif}
+  .ribbon-chip strong{font-size:1.25rem;font-family:'Syne',sans-serif;font-weight:700}
+  #chip-correct strong{color:var(--correct)} #chip-wrong strong{color:var(--wrong)} #chip-pct strong{color:var(--accent2)}
+  #quiz-area{width:100%;max-width:700px;padding:1.2rem 1.5rem 4rem}
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.8rem;animation:fadeSlide .35s ease}
+  @keyframes fadeSlide{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .q-meta{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.1rem}
+  .q-tag{font-size:.68rem;font-family:'Syne',sans-serif;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:.22rem .6rem}
+  .tag-self{background:#2a1840;color:#c084fc;border:1px solid #c084fc44}
+  .tag-gov{background:#2a2460;color:var(--accent1);border:1px solid #7c6af744}
+  .tag-ops{background:#124040;color:var(--accent2);border:1px solid #4fd8c444}
+  .tag-type{background:#1e1a10;color:var(--accent3);border:1px solid #f7a26a44}
+  .q-text{font-size:1.05rem;line-height:1.65;margin-bottom:1.5rem;color:var(--text)}
+  .options{display:flex;flex-direction:column;gap:.65rem}
+  .opt-btn{background:var(--card2);border:1.5px solid var(--border);border-radius:12px;padding:.8rem 1rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.95rem;text-align:left;cursor:pointer;transition:border-color .2s,background .2s,transform .1s}
+  .opt-btn:hover:not(:disabled){border-color:var(--accent1);background:#1e2040;transform:translateX(3px)}
+  .opt-btn.correct{border-color:var(--correct);background:#0f2e24;color:var(--correct)}
+  .opt-btn.wrong{border-color:var(--wrong);background:#2e1010;color:var(--wrong)}
+  .opt-btn:disabled{cursor:default}
+  .tf-row{display:flex;gap:1rem}
+  .tf-btn{flex:1;padding:1rem;border-radius:14px;font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:var(--card2);color:var(--text);transition:all .2s}
+  .tf-btn:hover:not(:disabled){transform:scale(1.03)}
+  .tf-btn.correct{border-color:var(--correct);background:#0f2e24;color:var(--correct)}
+  .tf-btn.wrong{border-color:var(--wrong);background:#2e1010;color:var(--wrong)}
+  .tf-btn:disabled{cursor:default}
+  .fill-row{display:flex;gap:.7rem;flex-wrap:wrap}
+  .fill-input{flex:1;min-width:180px;background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:.75rem 1rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;transition:border-color .2s}
+  .fill-input:focus{border-color:var(--accent1)}
+  .fill-input.correct{border-color:var(--correct);background:#0f2e24}
+  .fill-input.wrong{border-color:var(--wrong);background:#2e1010}
+  .submit-btn{background:var(--accent1);color:#fff;border:none;border-radius:10px;padding:.75rem 1.3rem;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;transition:opacity .2s,transform .1s}
+  .submit-btn:hover{opacity:.85;transform:scale(1.03)}
+  .submit-btn:disabled{opacity:.5;cursor:default}
+  .feedback{margin-top:1.1rem;border-radius:12px;padding:.9rem 1.1rem;font-size:.9rem;line-height:1.55;display:none}
+  .feedback.show{display:block;animation:fadeSlide .25s ease}
+  .feedback.correct-fb{background:#0f2e2466;border:1px solid #3ecf8e66;color:var(--correct)}
+  .feedback.wrong-fb{background:#2e101066;border:1px solid #f26c6c66;color:#f9a0a0}
+  #next-btn{display:none;margin-top:1.3rem;width:100%;padding:.95rem;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;letter-spacing:.03em;border:none;border-radius:12px;cursor:pointer;transition:opacity .2s,transform .15s}
+  #next-btn:hover{opacity:.88;transform:translateY(-2px)}
+  #next-btn.show{display:block;animation:fadeSlide .3s ease}
+  #results-screen{display:none;width:100%;max-width:700px;padding:2rem 1.5rem 4rem;text-align:center;animation:fadeSlide .5s ease}
+  #results-screen h2{font-family:'Syne',sans-serif;font-size:1.9rem;font-weight:800;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.4rem}
+  #results-screen p.sub{color:var(--muted);font-size:.9rem;margin-bottom:1.8rem}
+  .result-big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;line-height:1;margin-bottom:.3rem}
+  .result-label{color:var(--muted);font-size:.88rem;margin-bottom:1.8rem}
+  .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.8rem}
+  .result-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.1rem}
+  .result-card span{display:block;font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-family:'Syne',sans-serif;margin-bottom:.3rem}
+  .result-card strong{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:700}
+  .rc-correct strong{color:var(--correct)} .rc-wrong strong{color:var(--wrong)}
+  #restart-btn{background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff;border:none;border-radius:12px;padding:.95rem 2.4rem;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;transition:opacity .2s,transform .15s;margin-top:.5rem}
+  #restart-btn:hover{opacity:.85;transform:translateY(-2px)}
+  #missed-section{text-align:left;margin-top:2rem}
+  #missed-section h3{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:1rem}
+  .missed-item{background:var(--card);border:1px solid #2e1010;border-left:3px solid var(--wrong);border-radius:10px;padding:.9rem 1.1rem;margin-bottom:.75rem;font-size:.86rem;line-height:1.6}
+  .missed-item .mq{color:var(--text);font-weight:500;margin-bottom:.35rem}
+  .missed-item .ma{color:var(--correct)}
 
-        .alumni-section {
-            margin: 3rem 0;
-            padding: 2rem;
-            background: var(--card-bg);
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-        }
-        
-        .alumni-title {
-            color: var(--dominican-blue);
-            text-align: center;
-            margin-bottom: 2rem;
-            font-size: 2rem;
-            border-bottom: 2px solid var(--dominican-gold);
-            padding-bottom: 0.5rem;
-        }
-        
-        .alumni-carousel {
-            position: relative;
-            max-width: 600px;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-        
-        .alumni-track {
-            display: flex;
-            transition: transform 0.5s ease;
-        }
-        
-        .alumni-card {
-            min-width: 100%;
-            padding: 1rem;
-            box-sizing: border-box;
-            text-align: center;
-        }
-        
-        .alumni-image {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 5px solid var(--dominican-gold);
-            margin: 0 auto 1rem;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        .alumni-name {
-            color: var(--dominican-blue);
-            font-size: 1.5rem;
-            margin: 0.5rem 0;
-        }
-        
-        .alumni-bio {
-            color: var(--text-color);
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        
-        .carousel-nav {
-            display: flex;
-            justify-content: center;
-            margin-top: 1.5rem;
-        }
-        
-        .carousel-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--light-blue);
-            margin: 0 5px;
-            cursor: pointer;
-        }
-        
-        .carousel-dot.active {
-            background: var(--dominican-blue);
-        }
-        
-        .carousel-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: var(--dominican-gold);
-            color: var(--dominican-blue);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            z-index: 10;
-        }
-        
-        .carousel-arrow.prev {
-            left: 10px;
-        }
-        
-        .carousel-arrow.next {
-            right: 10px;
-        }
-        
-        @media (max-width: 768px) {
-            .alumni-image {
-                width: 150px;
-                height: 150px;
-            }
-            
-            .carousel-arrow {
-                width: 30px;
-                height: 30px;
-                font-size: 1rem;
-            }
-        }
-        
-    </style>
+@media(max-width:600px){
+  body{padding:0}
+  #score-ribbon{flex-direction:column}
+  .q-card{padding:1.2rem}
+  .q-text{font-size:1rem}
+  .tf-row{flex-direction:column}
+}
+
+</style>
 </head>
 <body>
-<body class="light-theme">
-  
-    <div class="theme-selector">
-        <div class="theme-button" style="background: #0056b3;" onclick="toggleThemePalette()"></div>
-        <div class="theme-palette" id="themePalette">
-            <div class="theme-button" style="background: #f8f9fa;" onclick="changeTheme('light')" title="Light"></div>
-            <div class="theme-button" style="background: #89C4FF;" onclick="changeTheme('pastel')" title="Pastel"></div>
-            <div class="theme-button" style="background: #5D4E60;" onclick="changeTheme('vintage')" title="Vintage"></div>
-            <div class="theme-button" style="background: #FF6B6B;" onclick="changeTheme('retro')" title="Retro"></div>
-            <div class="theme-button" style="background: #0FF0FC;" onclick="changeTheme('neon')" title="Neon"></div>
-            <div class="theme-button" style="background: #D4AF37;" onclick="changeTheme('gold')" title="Gold"></div>
-            <div class="theme-button" style="background: #121212;" onclick="changeTheme('dark')" title="Dark"></div>
-            <div class="theme-button" style="background: #E74C3C;" onclick="changeTheme('warm')" title="Warm"></div>
-            <div class="theme-button" style="background: #3498DB;" onclick="changeTheme('cold')" title="Cold"></div>
-            <div class="theme-button" style="background: #1ABC9C;" onclick="changeTheme('summer')" title="Summer"></div>
-            <div class="theme-button" style="background: #8B4513;" onclick="changeTheme('fall')" title="Fall"></div>
-            <div class="theme-button" style="background: #5DADE2;" onclick="changeTheme('winter')" title="Winter"></div>
-            <div class="theme-button" style="background: #58D68D;" onclick="changeTheme('spring')" title="Spring"></div>
-            <div class="theme-button" style="background: #9B59B6;" onclick="changeTheme('happy')" title="Happy"></div>
-            <div class="theme-button" style="background: #2ECC71;" onclick="changeTheme('nature')" title="Nature"></div>
-            <div class="theme-button" style="background: #7D6608;" onclick="changeTheme('earth')" title="Earth"></div>
-            <div class="theme-button" style="background: #3498DB;" onclick="changeTheme('night')" title="Night"></div>
-            <div class="theme-button" style="background: #9B59B6;" onclick="changeTheme('space')" title="Space"></div>
-            <div class="theme-button" style="background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);" onclick="changeTheme('rainbow')" title="Rainbow"></div>
-            <div class="theme-button" style="background: #4776E6;" onclick="changeTheme('gradient')" title="Gradient"></div>
-            <div class="theme-button" style="background: #E74C3C;" onclick="changeTheme('sunset')" title="Sunset"></div>
-            <div class="theme-button" style="background: #3498DB;" onclick="changeTheme('sky')" title="Sky"></div>
-            <div class="theme-button" style="background: #1ABC9C;" onclick="changeTheme('sea')" title="Sea"></div>
-            <div class="theme-button" style="background: #3498DB;" onclick="changeTheme('kids')" title="Kids"></div>
-            <div class="theme-button" style="background: #D2B4DE;" onclick="changeTheme('skin')" title="Skin"></div>
-            <div class="theme-button" style="background: #E74C3C;" onclick="changeTheme('food')" title="Food"></div>
-            <div class="theme-button" style="background: #FFF8E1;" onclick="changeTheme('cream')" title="Cream"></div>
-            <div class="theme-button" style="background: #5D4037;" onclick="changeTheme('coffee')" title="Coffee"></div>
-            <div class="theme-button" style="background: #9575CD;" onclick="changeTheme('wedding')" title="Wedding"></div>
-            <div class="theme-button" style="background: #2ECC71;" onclick="changeTheme('christmas')" title="Christmas"></div>
-            <div class="theme-button" style="background: #8E44AD;" onclick="changeTheme('halloween')" title="Halloween"></div>
-        </div>
-    </div>
 
-    <header>
-        <div class="header-content">
-            <div class="logo-container">
-   
-                <img src="images/angelicum-logo.png" alt="UST Angelicum College Logo" class="school-logo">
-            </div>
-            <h1>Trivia-Ange</h1>
-            <p>Did You Know? Fascinating facts about UST Angelicum College</p>
-        </div>
-    </header>
+<header>
+  <h1>📚 Finals Reviewer</h1>
+  <p>Understanding the Self &nbsp;·&nbsp; Governance &nbsp;·&nbsp; Operations, Quality &amp; Productivity</p>
+</header>
 
-    <div class="container">
-
-
-<div class="trivia-nav">
-
-    <button id="nextFact">Next</button>
+<div id="progress-wrap">
+  <div id="progress-label">
+    <span id="q-counter">Question 1</span>
+    <span id="q-topic"></span>
+  </div>
+  <div id="progress-bar-bg"><div id="progress-bar"></div></div>
 </div>
 
+<div id="score-ribbon">
+  <div class="ribbon-chip" id="chip-correct"><span>Correct</span><strong id="sc-correct">0</strong></div>
+  <div class="ribbon-chip" id="chip-wrong"><span>Wrong</span><strong id="sc-wrong">0</strong></div>
+  <div class="ribbon-chip" id="chip-pct"><span>Score</span><strong id="sc-pct">—</strong></div>
+</div>
 
-        <div class="trivia-card active">
-            <div class="trivia-number">1</div>
-            <h3>Non-Graded System</h3>
-            <p>UST Angelicum was one of the first schools in the Philippines to adopt a non-graded system, meaning students progress based on mastery rather than traditional grade levels.</p>
-        </div>
-
-        <div class="trivia-card">
-            <div class="trivia-number">2</div>
-            <h3>Founded by a Dominican Priest</h3>
-            <p>The school was established in 1972 by Fr. Rogelio B. Alarcon, O.P., a Dominican priest who wanted a more flexible and individualized approach to education.</p>
-        </div>
-
-        <div class="trivia-card">
-            <div class="trivia-number">3</div>
-            <h3>Connection to the Vatican's Angelicum University</h3>
-            <p>The name "Angelicum" comes from the Pontifical University of Saint Thomas Aquinas (Angelicum) in Rome, a prestigious Dominican university where many Filipino priests, including some UST professors, have studied.</p>
-        </div>
-
-        <div class="trivia-card">
-            <div class="trivia-number">4</div>
-            <h3>Sarah Geronimo's Alma Mater</h3>
-            <p>Pop superstar Sarah Geronimo studied here before transferring to another school. She remains one of its most famous alumni.</p>
-        </div>
-
-        <div class="trivia-card">
-            <div class="trivia-number">5</div>
-            <h3>No Numerical Grades Until College</h3>
-            <p>In its basic education program, students receive descriptive evaluations (like "Proficient" or "Advancing") instead of traditional number grades. Numerical grades only appear in college.</p>
-        </div>
-
-        <div class="trivia-card">
-            <div class="trivia-number">6</div>
-            <h3>Bianca Bustamante, F1 Academy Racer</h3>
-            <p>Bianca Bustamante, the first Filipina to race in the F1 Academy (a Formula 1 women's racing series), is an alumna of UST Angelicum.</p>
-        </div>
-
-        <div class="trivia-card">
-            <div class="trivia-number">7</div>
-            <h3>Formerly an All-Boys School</h3>
-            <p>When it first opened in 1972, Angelicum was an all-boys school. It later became co-educational.</p>
-        </div>
-
-        <div class="trivia-card">
-            <div class="trivia-number">8</div>
-            <h3>UST Affiliation (But Independent Financially)</h3>
-            <p>Despite being integrated with UST Manila in 2018, Angelicum still manages its own finances and operations, retaining its unique identity.</p>
-        </div>
-
-        <div class="trivia-card">
-            <div class="trivia-number">9</div>
-            <h3>No School Uniform Policy (Before)</h3>
-            <p>Unlike most Catholic schools in the Philippines, Angelicum did not require uniforms for many years, promoting a more relaxed environment. However, policies may have changed since integration with UST.</p>
-        </div>
-
-        <div class="trivia-card">
-            <div class="trivia-number">10</div>
-            <h3>Home of the "Tigercubs" & "Roebucks"</h3>
-            <p>The school's mascots are the Tigercubs (for younger students) and Roebucks (for older students), inspired by the Dominican tradition of using animals as symbols.</p>
-     
-            <img src="images/mascot.png" alt="Angelicum Tigercub and Roebuck Mascots" class="mascot-image">
-        </div>
-
-    
-<div class="timeline-section">
-    <h2 class="timeline-title">Angelicum Journey Through Time</h2>
-    <div class="timeline-container">
-        <div class="timeline-item">
-            <div class="timeline-year">1972</div>
-            <div class="timeline-content">
-                <p>Fr. Alarcon establishes Angelicum as the first non-graded school in the Philippines</p>
-                <div class="timeline-detail">Started with just 35 students</div>
-            </div>
-        </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">1995</div>
-                    <div class="timeline-content">
-                        <p>Collegiate Department opens</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">May 1996</div>
-                    <div class="timeline-content">
-                        <p>Renamed Angelicum College</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">August 1996</div>
-                    <div class="timeline-content">
-                        <p>Home Study Program (HSP) granted recognition</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">2004</div>
-                    <div class="timeline-content">
-                        <p>Rev. Fr. Herminio V. Dagohoy, O.P. becomes 9th Rector</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">2016</div>
-                    <div class="timeline-content">
-                        <p>UST integration finalized. Jordan of Saxony building constructed</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">2022</div>
-                    <div class="timeline-content">
-                        <p>Opening of A.Y. 2022-2023</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">2024</div>
-                    <div class="timeline-content">
-                        <p>Higher Education Department (HED) begins academic year</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">2025</div>
-                    <div class="timeline-content">
-                        <p>SHS Voucher Program applications open for SY 2025-2026</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="general-info">
-            <h2>About UST Angelicum College</h2>
-            <p><strong>Full Name:</strong> University of Santo Tomas – Angelicum College (formerly Angelicum School and Angelicum College).</p>
-            <p><strong>Type:</strong> Private, non-profit, non-graded Catholic basic and higher education institution.</p>
-            <p><strong>Religious Affiliation:</strong> Roman Catholic (Dominican Order).</p>
-            <p><strong>Motto:</strong> Caritas, Justitia, Fortitudo (Charity, Justice, Fortitude).</p>
-            <p><strong>Established:</strong> July 1972 (founded by Dominican priest Rev. Fr. Rogelio B. Alarcon, OP).</p>
-            <p><strong>Location:</strong> Quezon City, Metro Manila, Philippines.</p>
-            <p><strong>Campus:</strong> Urban.</p>
-            
-            <h3>Integration with UST</h3>
-            <p>In 2018, it was renamed UST Angelicum College after integrating with the University of Santo Tomas (UST).</p>
-            <p>A new Board of Trustees was formed (9 members from UST Manila, 3 from Angelicum).</p>
-            <p>Retains administrative and financial independence.</p>
-            <p>UST Rector serves as Chief Executive Officer, while Angelicum's former rector became Chief Operating Officer.</p>
-            
-            <h3>Notable Alumni</h3>
-            <ul>
-                <li>Sarah Geronimo (Singer, Actress)</li>
-                <li>Julie Anne San Jose (Singer, Actress)</li>
-                <li>Bernadette Sembrano (News Anchor)</li>
-                <li>Antonio Trillanes (Politician)</li>
-                <li>Bianca Bustamante (Racing Driver)</li>
-            </ul>
-            
-            <p><strong>Official website:</strong> <a href="http://www.ustangelicum.edu.ph" target="_blank">www.ustangelicum.edu.ph</a></p>
-        </div>
-    </div>
-<div class="alumni-section">
-        <h2 class="alumni-title">Notable Alumni Spotlight</h2>
-        <div class="alumni-carousel">
-            <button class="carousel-arrow prev">❮</button>
-            <button class="carousel-arrow next">❯</button>
-            
-            <div class="alumni-track">
-      
-                <div class="alumni-card">
-                    <img src="images/sarah.png" alt="Sarah Geronimo" class="alumni-image">
-                    <h3 class="alumni-name">Sarah Geronimo</h3>
-                    <p class="alumni-title">Pop Superstar</p>
-                    <p class="alumni-bio">One of the most successful Filipino artists of all time, known as the "Popstar Royalty" of the Philippines.</p>
-                </div>
-                
-    
-                <div class="alumni-card">
-                    <img src="images/bernadette.png" alt="Bernadette Sembrano" class="alumni-image">
-                    <h3 class="alumni-name">Bernadette Sembrano</h3>
-                    <p class="alumni-title">Award-winning Journalist</p>
-                    <p class="alumni-bio">Veteran news anchor known for her work on ABS-CBN and ANC.</p>
-                </div>
-                
-              
-                <div class="alumni-card">
-                    <img src="images/antonio.png" alt="Antonio Trillanes" class="alumni-image">
-                    <h3 class="alumni-name">Antonio Trillanes</h3>
-                    <p class="alumni-title">Former Senator</p>
-                    <p class="alumni-bio">Former Philippine Navy officer and senator known for his advocacy work.</p>
-                </div>
-                
-    
-                <div class="alumni-card">
-                    <img src="images/julie.png" alt="Julie Anne San Jose" class="alumni-image">
-                    <h3 class="alumni-name">Julie Anne San Jose</h3>
-                    <p class="alumni-title">Singer-Actress</p>
-                    <p class="alumni-bio">Multi-awarded performer known as GMA Network's "Ultimate Star".</p>
-                </div>
-                
-         
-                <div class="alumni-card">
-                    <img src="images/bianca.png" alt="Bianca Bustamante" class="alumni-image">
-                    <h3 class="alumni-name">Bianca Bustamante</h3>
-                    <p class="alumni-title">Professional Racing Driver</p>
-                    <p class="alumni-bio">First Filipina to race in the F1 Academy, representing McLaren.</p>
-                </div>
-            </div>
-            
-            <div class="carousel-nav">
-                <div class="carousel-dot active" data-index="0"></div>
-                <div class="carousel-dot" data-index="1"></div>
-                <div class="carousel-dot" data-index="2"></div>
-                <div class="carousel-dot" data-index="3"></div>
-                <div class="carousel-dot" data-index="4"></div>
-            </div>
-        </div>
-    </div>
-
-
-
-   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const track = document.querySelector('.alumni-track');
-        const cards = document.querySelectorAll('.alumni-card');
-        const dots = document.querySelectorAll('.carousel-dot');
-        const prevBtn = document.querySelector('.carousel-arrow.prev');
-        const nextBtn = document.querySelector('.carousel-arrow.next');
-        let currentIndex = 0;
-        const cardWidth = cards[0].offsetWidth;
-        
-        function updateCarousel() {
-            track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
-            
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentIndex);
-            });
-        }
-        
-        // Next button click handler
-        nextBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % cards.length;
-            updateCarousel();
-        });
-        
-        // Previous button click handler
-        prevBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + cards.length) % cards.length;
-            updateCarousel();
-        });
-        
-        // Dot indicators click handler
-        dots.forEach(dot => {
-            dot.addEventListener('click', () => {
-                currentIndex = parseInt(dot.getAttribute('data-index'));
-                updateCarousel();
-            });
-        });
-        
-        // Initialize carousel
-        updateCarousel();
-        
-        /* REMOVED the auto-scroll interval completely */
-    });
-</script>
-</body>
-</html>
-
-<section class="quiz-section">
-  <h2 class="quiz-title">Angelicum Trivia Challenge</h2>
-  <div id="quiz-container">
-    <div id="question-container">
-      <div id="question" class="quiz-question"></div>
-      <div id="options" class="quiz-options"></div>
-    </div>
-    <div id="result" class="quiz-result"></div>
-    <div class="quiz-controls">
-      <button id="next-btn" class="quiz-button">Next Question</button>
-      <div id="score" class="quiz-score">Score: <span>0</span>/15</div>
-    </div>
+<div id="quiz-area">
+  <div class="q-card" id="q-card">
+    <div class="q-meta" id="q-meta"></div>
+    <div class="q-text" id="q-text"></div>
+    <div id="q-input"></div>
+    <div class="feedback" id="feedback"></div>
+    <button id="next-btn">Next Question →</button>
   </div>
-</section>
+</div>
 
-<style>
-
-  .quiz-section {
-    background: var(--card-bg);
-    padding: 2rem;
-    margin: 3rem 0;
-    border-radius: 8px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-  }
-  
-  .quiz-title {
-    color: var(--dominican-blue);
-    text-align: center;
-    margin-bottom: 1.5rem;
-    border-bottom: 2px solid var(--dominican-gold);
-    padding-bottom: 0.5rem;
-  }
-  
-  .quiz-question {
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-    color: var(--dominican-blue);
-    font-weight: bold;
-  }
-  
-  .quiz-options {
-    display: grid;
-    gap: 12px;
-    margin-bottom: 2rem;
-  }
-  
-  .quiz-option {
-    padding: 12px;
-    background: var(--light-blue);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s;
-    border-left: 3px solid var(--dominican-blue);
-  }
-  
-  .quiz-option:hover {
-    background: var(--dominican-gold);
-    color: var(--dominican-blue);
-    transform: translateX(5px);
-  }
-  
-  .quiz-option.correct {
-    background: #2ecc71;
-    color: white;
-  }
-  
-  .quiz-option.incorrect {
-    background: #e74c3c;
-    color: white;
-  }
-  
-  .quiz-button {
-    background: var(--dominican-gold);
-    color: var(--dominican-blue);
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  
-  .quiz-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  }
-  
-  .quiz-result {
-    min-height: 30px;
-    margin: 1rem 0;
-    font-weight: bold;
-    text-align: center;
-  }
-  
-  .quiz-score {
-    font-size: 1.1rem;
-    color: var(--dominican-blue);
-  }
-  
-  .quiz-score span {
-    font-weight: bold;
-  }
-  
-  @media (max-width: 768px) {
-    .quiz-options {
-      gap: 8px;
-    }
-  }
-</style>
+<div id="results-screen">
+  <h2>Quiz Complete! 🎉</h2>
+  <p class="sub">Here's how you did. Good luck on your finals!</p>
+  <div class="result-big" id="res-pct"></div>
+  <div class="result-label" id="res-lbl"></div>
+  <div class="result-grid">
+    <div class="result-card rc-correct"><span>Correct</span><strong id="res-correct"></strong></div>
+    <div class="result-card rc-wrong"><span>Wrong</span><strong id="res-wrong"></strong></div>
+  </div>
+  <button id="restart-btn">🔄 Restart Quiz</button>
+  <div id="missed-section">
+    <h3>Missed Questions — Review These</h3>
+    <div id="missed-list"></div>
+  </div>
+</div>
 
 <script>
-
-  const quizQuestions = [
-    {
-    
-      question: "What made Angelicum's educational system unique when it was founded?",
-      options: [
-        "It was the first online school in PH",
-        "It used a non-graded system",
-        "It only taught religious studies"
-      ],
-      answer: 1,
-      fact: "Angelicum was the first non-graded school in the Philippines, allowing students to progress at their own pace."
-    },
-    {
-      question: "Which famous pop star attended Angelicum?",
-      options: [
-        "Regine Velasquez",
-        "Sarah Geronimo", 
-        "Lea Salonga"
-      ],
-      answer: 1,
-      fact: "Sarah Geronimo studied at Angelicum before becoming the Philippines' 'Popstar Royalty'."
-    },
-    {
-      question: "What are Angelicum's mascots called?",
-      options: [
-        "Eagles and Lions",
-        "Tigercubs and Roebucks",
-        "Saints and Angels"
-      ],
-      answer: 1,
-      fact: "The Tigercubs (younger students) and Roebucks (older students) reflect Dominican traditions."
-    },
-    {
-      question: "When did Angelicum officially merge with UST?",
-      options: [
-        "2005",
-        "2012",
-        "2018"
-      ],
-      answer: 2,
-      fact: "After years of discussion, the official merger happened in 2018 while retaining financial independence."
-    },
-    {
-      question: "Which of these notable alumni is a racing driver?",
-      options: [
-        "Antonio Trillanes",
-        "Bianca Bustamante",
-        "Julie Anne San Jose"
-      ],
-      answer: 1,
-      fact: "Bianca Bustamante made history as the first Filipina in the F1 Academy, racing for McLaren."
-   },
-    {
-        question: "Which Dominican saint is featured in the USTAC logo?",
-        options: [
-            "St. Thomas Aquinas",
-            "St. Dominic de Guzman",
-            "St. Martin de Porres"
-        ],
-        answer: 0,
-        fact: "St. Thomas Aquinas, the 'Angelic Doctor', is featured as he's the patron of all Dominican schools."
-    },
-    {
-        question: "What does the 'OP' stand for in Fr. Rogelio Alarcon, OP?",
-        options: [
-            "Order of Preachers",
-            "Official Priest",
-            "Ordained Pastor"
-        ],
-        answer: 0,
-        fact: "OP stands for 'Ordo Praedicatorum' - the Latin name for the Order of Preachers (Dominicans)."
-    },
-    {
-        question: "Which of these is NOT one of the Dominican mottos?",
-        options: [
-            "Veritas (Truth)",
-            "Caritas (Charity)",
-            "Gloria (Glory)"
-        ],
-        answer: 2,
-        fact: "The core Dominican mottos are Veritas (Truth) and Caritas (Charity)."
-    },
-    {
-        question: "What color do Dominican priests wear?",
-        options: [
-            "Black and white",
-            "Blue and gold",
-            "Brown and white"
-        ],
-        answer: 0,
-        fact: "Dominicans wear a white habit with black cape (cappa) - representing purity and penance."
-    },
-    {
-        question: "Which famous Dominican institution is Angelicum's namesake?",
-        options: [
-            "Angelicum University in Rome",
-            "University of Santo Tomas in Manila",
-            "St. Dominic's University in Bologna"
-        ],
-        answer: 0,
-        fact: "It's named after the Pontifical University of St. Thomas Aquinas (Angelicum) in Rome."
-    },
-    {
-        question: "What animal symbolizes Dominican missionaries?",
-        options: [
-            "Dogs carrying torches",
-            "Lions with crosses",
-            "Eagles with books"
-        ],
-        answer: 0,
-        fact: "From St. Dominic's mother's dream of dogs with torches - symbolizing spreading light/truth."
-    },
-    {
-        question: "Which Dominican tradition does USTAC's Roebuck mascot reference?",
-        options: [
-            "St. Dominic's vision of deer",
-            "St. Thomas's love for nature",
-            "St. Martin's miraculous animals"
-        ],
-        answer: 0,
-        fact: "The roebuck (deer) connects to St. Dominic's spiritual visions involving deer."
-    },
-    {
-        question: "How many Dominican pillars of education does USTAC follow?",
-        options: [
-            "Four",
-            "Three",
-            "Five"
-        ],
-        answer: 0,
-        fact: "The four pillars are: Prayer, Study, Community, and Service."
-    },
-    {
-        question: "Which Dominican saint is known as the 'Mozart of Theology'?",
-        options: [
-            "St. Thomas Aquinas",
-            "St. Albert the Great",
-            "St. Vincent Ferrer"
-        ],
-        answer: 1,
-        fact: "St. Albert the Great was called this for his encyclopedic theological knowledge."
-    },
-    {
-        question: "What unique feature did original Angelicum classrooms have?",
-        options: [
-            "No front-facing teacher's desk",
-            "Circular seating arrangements",
-            "No blackboards/whiteboards"
-        ],
-        answer: 1,
-        fact: "Reflecting its progressive roots, it used circular seating to encourage discussion."
-    }
+var Q=[
+  {topic:"Managing the Self",type:"mcq",q:"What is the definition of 'Learning' in the context of Managing the Self?",opts:["The ability to recall past information","A change in behavior potentiality that happens when we absorb knowledge","The translation of potential into observable action","Adapting movement to stimuli"],ans:1},
+  {topic:"Managing the Self",type:"mcq",q:"Performance is best defined as:",opts:["Absorbing knowledge effectively","Getting a high grade in school","The translation of learning potentiality into observable behavior","The ability to memorize information quickly"],ans:2},
+  {topic:"Managing the Self",type:"mcq",q:"According to the classic inverted-U curve, which stress level correlates with the HIGHEST performance?",opts:["Low stress","High stress","Moderate stress","Zero stress"],ans:2},
+  {topic:"Managing the Self",type:"tf",q:"High stress leads to MORE brain activity in the cortical areas where higher-level learning happens.",ans:false},
+  {topic:"Managing the Self",type:"mcq",q:"Which type of learning involves learning WITHOUT understanding, such as memorization?",opts:["Rational Learning","Associational Learning","Rote Learning","Motor Learning"],ans:2},
+  {topic:"Managing the Self",type:"mcq",q:"Praying the Angelus every 12 NN is an example of which type of learning?",opts:["Motor Learning","Rote Learning","Appreciational Learning","Associational Learning"],ans:3},
+  {topic:"Managing the Self",type:"mcq",q:"Appreciating art at the national museum or team-building activities that teach camaraderie are examples of:",opts:["Rational Learning","Rote Learning","Motor Learning","Appreciational Learning"],ans:3},
+  {topic:"Managing the Self",type:"mcq",q:"Sports is an example of which learning type?",opts:["Rote Learning","Rational Learning","Motor Learning","Associational Learning"],ans:2},
+  {topic:"Managing the Self",type:"fill",q:"The basic principle of learning that states 'most recent impression or association is more likely to be recalled' is called ___.",keywords:["recency"]},
+  {topic:"Managing the Self",type:"fill",q:"The VARK learning style framework was developed by ___ Fleming.",keywords:["neil","neil fleming"]},
+  {topic:"Managing the Self",type:"mcq",q:"A Kinesthetic learner learns best by:",opts:["Viewing podcasts and lectures","Hearing information","Reading and writing in text form","Doing, through movement, experiments, and practical activities"],ans:3},
+  {topic:"Managing the Self",type:"mcq",q:"A learner who switches from one VARK mode to another depending on context (one at a time) is called:",opts:["Integrative Multimodal","Selective Multimodal","Aural Multimodal","Read/Write Multimodal"],ans:1},
+  {topic:"Managing the Self",type:"tf",q:"Integrative Multimodal learners combine ALL different VARK strategies at the same time.",ans:true},
+  {topic:"Managing the Self",type:"mcq",q:"In SMART Goals, what does the 'A' stand for?",opts:["Achievable","Ambitious","Action Plan","Analytical"],ans:0},
+  {topic:"Managing the Self",type:"tf",q:"According to Goal Setting Theory (Locke and Latham), specific and challenging goals along with appropriate feedback contribute to higher performance.",ans:true},
+  {topic:"Managing the Self",type:"mcq",q:"'Prepotent' needs in Maslow's hierarchy means:",opts:["They can be skipped if unimportant","They must be satisfied before higher-level needs become activated","They are most important regardless of order","They apply only to physiological needs"],ans:1},
+  {topic:"Managing the Self",type:"mcq",q:"Albert Bandura's Social Cognitive Theory emphasizes:",opts:["How biology alone determines motivation","How cognitive, behavioral, personal, and environmental factors interact to determine motivation and behavior","How fixed traits determine academic success","How rewards and punishments shape learning"],ans:1},
+  {topic:"Managing the Self",type:"fill",q:"The belief we have in our own abilities and capability to meet challenges ahead of us is called self-___.",keywords:["efficacy"]},
+  {topic:"Managing the Self",type:"mcq",q:"In Carol Dweck's Growth Mindset Theory, a person with a FIXED mindset:",opts:["Believes they can acquire any ability with effort","Interprets failure as a lack of necessary basic abilities","Embraces challenges as opportunities","Uses the 'Power of Yet'"],ans:1},
+  {topic:"Stress & Self-Care",type:"mcq",q:"Stress is defined as a combination of a:",opts:["Trigger and a response","Stressor and a stress response","Problem and a solution","Situation and an emotion"],ans:1},
+  {topic:"Stress & Self-Care",type:"mcq",q:"Eustress is:",opts:["Long-term negative stress that causes trauma","Often short-term, helps you achieve goals, may help you focus and concentrate better","The same as distress but less severe","A category of cognitive stressors"],ans:1},
+  {topic:"Stress & Self-Care",type:"tf",q:"Distress can only be short-term.",ans:false},
+  {topic:"Stress & Self-Care",type:"mcq",q:"Poverty, pollution, crowding, noise, and natural disasters are examples of which stressor category?",opts:["Cognitive/Thinking Stressors","Life Situation Stressors","Personal Behavior Stressors","Environmental Stressors"],ans:3},
+  {topic:"Stress & Self-Care",type:"mcq",q:"Exams and problems that stress a person based on how they PERCEIVE the situation fall under which stressor category?",opts:["Environmental Stressors","Life Situation Stressors","Cognitive/Thinking Stressors","Personal Behavior Stressors"],ans:2},
+  {topic:"Stress & Self-Care",type:"fill",q:"The body's response to stress by Hans Selye, involving three stages (Alarm, Resistance, Exhaustion/Fatigue), is called the ___ Adaptation Syndrome.",keywords:["general"]},
+  {topic:"Stress & Self-Care",type:"mcq",q:"Which personality type is described as self-driven, competitive, and most likely to develop heart disease?",opts:["Type B","Type C","Type D","Type A"],ans:3},
+  {topic:"Stress & Self-Care",type:"mcq",q:"Type C personality (Temoshok and Dreher) is characterized by:",opts:["Being laid back and non-competitive","Being self-driven and high-achieving","Being pleasant but having difficulty expressing negative emotions","Experiencing increased negative emotions and fearing rejection"],ans:2},
+  {topic:"Stress & Self-Care",type:"mcq",q:"Psychoneuroimmunology studies:",opts:["The psychology of criminal behavior","The interaction between psychological processes and the nervous and immune systems","How the environment causes disease","The study of neurotransmitters only"],ans:1},
+  {topic:"Stress & Self-Care",type:"mcq",q:"'Bahala Na' as a Filipino way of confronting stress reflects:",opts:["Avoidance of all problems","Courage in the face of difficulties","Belief that God will take care of things; improvisatory skills of Filipinos","Resistance against injustice"],ans:2},
+  {topic:"Stress & Self-Care",type:"mcq",q:"'Utang na Loob' can cause stress because it:",opts:["Encourages unconditional positive regard","Refutes unconditional positive regard by creating a debt of gratitude","Creates freedom and independence","Promotes social harmony without pressure"],ans:1},
+  {topic:"Stress & Self-Care",type:"mcq",q:"Which Filipino value refers to sensitivity to attacks on one's self-esteem and dignity?",opts:["Kalayaan","Katarungan","Karangalan","Pakikisama"],ans:2},
+  {topic:"Stress & Self-Care",type:"mcq",q:"Problem-Focused Coping involves:",opts:["Regulating emotions experienced due to the stressful event","Attempting to do something constructive about stressful conditions","Avoiding stressors entirely","Using meditation and exercise"],ans:1},
+  {topic:"Stress & Self-Care",type:"tf",q:"Exercise, taking a bath, and meditating are examples of Emotion-Focused Coping.",ans:true},
+  {topic:"Stress & Self-Care",type:"mcq",q:"The Avoidant (Minimizing) coping style involves:",opts:["Addressing the problem directly and openly","Removing the stressor and avoiding it in the future","Using multiple coping mechanisms simultaneously","Seeking professional help"],ans:1},
+  {topic:"Stress & Self-Care",type:"mcq",q:"Mental Hygiene is the science of:",opts:["Treating diagnosed mental disorders","Maintaining mental health and preventing the development of psychosis, neurosis, or other mental disorders","Diagnosing personality types","Studying stress hormones like cortisol"],ans:1},
+  {topic:"Stress & Self-Care",type:"mcq",q:"Which mental hygiene approach attempts to correct minor behavioral adjustments through counseling and psychotherapy?",opts:["Preventive Approach","Curative Approach","Therapeutic Approach","Self-Care Approach"],ans:2},
+  {topic:"Mental Health",type:"mcq",q:"Which of the following is a RESULT of good mental health?",opts:["Absence of all negative emotions","Productive activities, fulfilling relationships, and ability to cope with life's challenges","Complete immunity from stress","High academic performance only"],ans:1},
+  {topic:"Mental Health",type:"tf",q:"According to the Mental Health Continuum Model, mental health is binary — you are either mentally healthy or mentally ill.",ans:false},
+  {topic:"Mental Health",type:"mcq",q:"In the Ginhawa Model, 'Tatag at Tibay ng Loob' refers to:",opts:["Safety and stable emotional resolve","Social relationships and support","Spirituality, faith, purpose, and meaning","Resilience and ability to overcome challenges"],ans:3},
+  {topic:"Mental Health",type:"mcq",q:"'Kakayahan' in the Ginhawa Model refers to:",opts:["Physical health and strength","Engagement in life-giving activities","Agency and sense of accomplishment","Spirituality and faith"],ans:2},
+  {topic:"Mental Health",type:"mcq",q:"Mental DISTRESS differs from a mental DISORDER in that distress:",opts:["Is more severe and long-lasting","Requires a diagnosis","Does not need a diagnosis and is usually short-lasting","Always requires professional help"],ans:2},
+  {topic:"Mental Health",type:"mcq",q:"The Biopsychosocial Model of Health and Illness was proposed by:",opts:["Abraham Maslow","Aaron Beck","George Engel","Hans Selye"],ans:2},
+  {topic:"Mental Health",type:"fill",q:"The Diathesis-Stress Model states that mental disorders develop from a ___ or biological predisposition combined with stressful conditions.",keywords:["genetic","genetics"]},
+  {topic:"Mental Health",type:"mcq",q:"'All or Nothing Thinking' (Aaron Beck) is characterized by:",opts:["Predicting negative future events","Black and white thinking — 'If I'm not perfect, I have failed'","Blaming yourself for things that were not your fault","Noticing only failures and not successes"],ans:1},
+  {topic:"Mental Health",type:"mcq",q:"'I feel embarrassed so I must be an idiot' is an example of which cognitive distortion?",opts:["Mental Filter","Labelling","Emotional Reasoning","Personalization"],ans:2},
+  {topic:"Mental Health",type:"mcq",q:"'Jumping to Conclusions' has two subtypes. Which pair is correct?",opts:["Labelling and Personalization","Mind Reading and Fortune Telling","Magnification and Minimization","All or Nothing and Over-generalizing"],ans:1},
+  {topic:"Mental Health",type:"tf",q:"Personalization involves blaming yourself OR others — either direction is a cognitive distortion.",ans:true},
+  {topic:"Mental Health",type:"mcq",q:"Which Philippine law is known as the Mental Health Law?",opts:["RA 10173","RA 11036","RA 9344","RA 10175"],ans:1},
+  {topic:"Mental Health",type:"mcq",q:"A Psychiatrist differs from a Psychologist in that a psychiatrist:",opts:["Has an advanced degree and specializes in psychological testing","Focuses on integrating clients into the community","Is a medical doctor who can conduct and prescribe medical treatments","Focuses on everyday life concerns that are not clinical"],ans:2},
+  {topic:"Mental Health",type:"mcq",q:"A Psychometrician's primary role includes:",opts:["Prescribing medication for mental illness","Administering objective and structured personality tests and conducting preparatory intake interviews","Focusing on resumption of daily living activities","Managing signs and symptoms of clients as a case manager"],ans:1},
+  {topic:"Mental Health",type:"mcq",q:"A Life Coach focuses on:",opts:["Clinical diagnosis of mental disorders","Everyday life concerns that are not clinical in nature","Integration of clients in the community","Resumption of occupational skills"],ans:1},
+  {topic:"Resilience",type:"fill",q:"Resilience comes from the Latin verb 'resilire' (re-salire) which literally means 'to ___ back'.",keywords:["jump"]},
+  {topic:"Resilience",type:"tf",q:"Resilience is a fixed trait that people either have or do not have.",ans:false},
+  {topic:"Resilience",type:"mcq",q:"Dr. Catherine Panter-Brick describes resilience as:",opts:["A fixed personality trait","A process to harness resources to sustain well-being","The absence of stress and adversity","A biological predisposition"],ans:1},
+  {topic:"Resilience",type:"mcq",q:"Which of the following is a PROTECTIVE FACTOR in building resilience?",opts:["Fixed mindset","Avoidance of all stressors","Sense of Coherence — believing the world is manageable and meaningful","Isolation from social relationships"],ans:2},
+  {topic:"Resilience",type:"mcq",q:"Under Determinants of Resiliency, which falls under the PSYCHOLOGICAL determinant?",opts:["Genetics and DNA","The Filipino Spirit","Personality, Coping Mechanisms, and Parenting Styles","Survival and Adaptation"],ans:2},
+  {topic:"Resilience",type:"mcq",q:"Which best describes the difference between COPING and RESILIENCE?",opts:["Coping is long-term while resilience is short-term","Coping refers to ability to control emotions and problem solve; resilience refers to the ability to bounce back and provides hardiness","They are the same concept","Resilience requires professional help while coping does not"],ans:1},
+  {topic:"Governance",type:"mcq",q:"Corporate governance is a set of rules, practices, and procedures whose objective is to:",opts:["Maximize short-term profits for shareholders","Balance the interests of various stakeholders","Reduce government regulation on corporations","Appoint the best possible CEO"],ans:1},
+  {topic:"Governance",type:"fill",q:"The sum of incentive costs, monitoring costs, enforcement costs, and individual financial losses incurred by principals is called ___ cost.",keywords:["agency"]},
+  {topic:"Governance",type:"mcq",q:"Ownership concentration is defined by:",opts:["The percentage of government ownership in the firm","The number of large-block shareholders and the total percentage of shares they own","The ratio of insider vs outsider board members","The market capitalization of the firm"],ans:1},
+  {topic:"Governance",type:"tf",q:"Institutional owners are financial institutions such as mutual funds and pension funds that control large-block shareholder positions.",ans:true},
+  {topic:"Governance",type:"mcq",q:"Which Board of Directors member serves as a source of information about the firm's day-to-day operations?",opts:["Outsiders","Related Outsiders","Insiders","Independent Counsel"],ans:2},
+  {topic:"Governance",type:"mcq",q:"Related Outsiders on a Board of Directors are individuals who:",opts:["Are completely independent of the firm","Are the CEO and top-level managers","Have some relationship with the firm but are not involved in day-to-day operations","Own more than 10% of the firm's shares"],ans:2},
+  {topic:"Governance",type:"mcq",q:"Executive compensation as a governance mechanism seeks to:",opts:["Reduce operating costs through salary cuts","Align the interests of managers and owners through salaries, bonuses, and long-term incentives","Replace the market for corporate control","Ensure regulatory compliance with the SEC"],ans:1},
+  {topic:"Governance",type:"tf",q:"The Market for Corporate Control is an INTERNAL governance mechanism.",ans:false},
+  {topic:"Governance",type:"mcq",q:"The primary responsibility of the Board of Directors is to:",opts:["Manage the firm's day-to-day operations","Act in the owners' best interest by formally monitoring and controlling top-level managers","Set prices and manage supply chains","Oversee government relations"],ans:1},
+  {topic:"Operations & Quality",type:"mcq",q:"Operations management is defined as:",opts:["A financial strategy for reducing overhead costs","A set of managerial activities organizations use in creating their products and/or services","A method of managing human resources","A legal framework for corporate compliance"],ans:1},
+  {topic:"Operations & Quality",type:"tf",q:"Operations management is only important for manufacturing organizations, not service organizations.",ans:false},
+  {topic:"Operations & Quality",type:"mcq",q:"Which of the following is a key decision in designing an operation system?",opts:["Choosing corporate governance mechanisms","Determining product and service mix, capacity, and facilities","Selecting board members","Setting executive compensation packages"],ans:1},
+  {topic:"Operations & Quality",type:"fill",q:"A comprehensive, organization-wide effort to enhance quality in various ways is called ___ Quality Management.",keywords:["total"]},
+  {topic:"Operations & Quality",type:"mcq",q:"Productivity is defined as:",opts:["The total number of units a firm produces per year","A measure of how efficiently an organization is using its resources to create products or services","The ratio of profit to revenue","The speed at which a firm launches new products"],ans:1},
+  {topic:"Operations & Quality",type:"mcq",q:"According to the notes, quality affects which of the following?",opts:["Only competition","Only costs","Competition, costs, and productivity","Government regulation and compliance"],ans:2},
+  {topic:"Operations & Quality",type:"mcq",q:"Which are identified as major areas of the operation system that must be managed?",opts:["Governance and compensation","Purchase and inventory","Marketing and advertising","Compliance and legal affairs"],ans:1}
 ];
 
+var questions=[],current=0,correct=0,wrong=0,answered=false,missed=[];
 
-  let currentQuestion = 0;
-  let score = 0;
-  let selectedOption = null;
+function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 
+var tclass={"Managing the Self":"tag-self","Stress & Self-Care":"tag-self","Mental Health":"tag-self","Resilience":"tag-self","Governance":"tag-gov","Operations & Quality":"tag-ops"};
 
-  const questionEl = document.getElementById('question');
-  const optionsEl = document.getElementById('options');
-  const resultEl = document.getElementById('result');
-  const nextBtn = document.getElementById('next-btn');
-  const scoreEl = document.querySelector('#score span');
+function updateScore(){
+  document.getElementById('sc-correct').textContent=correct;
+  document.getElementById('sc-wrong').textContent=wrong;
+  var d=correct+wrong;
+  document.getElementById('sc-pct').textContent=d?Math.round(correct/d*100)+'%':'—';
+}
 
+function init(){
+  questions=shuffle(Q);current=0;correct=0;wrong=0;answered=false;missed=[];
+  document.getElementById('results-screen').style.display='none';
+  document.getElementById('quiz-area').style.display='block';
+  document.getElementById('progress-wrap').style.display='block';
+  document.getElementById('score-ribbon').style.display='flex';
+  updateScore();renderQ();
+}
 
-  function loadQuestion() {
-    const q = quizQuestions[currentQuestion];
-    questionEl.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
-    
-    optionsEl.innerHTML = '';
-    q.options.forEach((option, index) => {
-      const optionEl = document.createElement('div');
-      optionEl.classList.add('quiz-option');
-      optionEl.textContent = option;
-      optionEl.addEventListener('click', () => selectAnswer(index));
-      optionsEl.appendChild(optionEl);
-    });
-    
-    resultEl.textContent = '';
-    nextBtn.style.display = 'none';
-    selectedOption = null;
+function renderQ(){
+  answered=false;
+  var q=questions[current],total=questions.length;
+  document.getElementById('q-counter').textContent='Question '+(current+1)+' of '+total;
+  document.getElementById('q-topic').textContent=q.topic;
+  document.getElementById('progress-bar').style.width=((current+1)/total*100)+'%';
+  var tl=q.type==='mcq'?'Multiple Choice':q.type==='tf'?'True / False':'Fill in the Blank';
+  document.getElementById('q-meta').innerHTML='<span class="q-tag '+(tclass[q.topic]||'tag-gov')+'">'+q.topic+'</span><span class="q-tag tag-type">'+tl+'</span>';
+  document.getElementById('q-text').textContent=q.q;
+  var inp=document.getElementById('q-input');inp.innerHTML='';
+
+  if(q.type==='mcq'){
+    var div=document.createElement('div');div.className='options';
+    q.opts.forEach(function(opt,i){
+      var btn=document.createElement('button');btn.className='opt-btn';btn.textContent=opt;
+      btn.onclick=(function(idx){return function(){handleMCQ(idx,q.ans,q.opts,q.q);};})(i);
+      div.appendChild(btn);
+    });inp.appendChild(div);
+  } else if(q.type==='tf'){
+    var row=document.createElement('div');row.className='tf-row';
+    ['True','False'].forEach(function(val){
+      var btn=document.createElement('button');btn.className='tf-btn';btn.textContent=val;
+      btn.onclick=(function(v){return function(){handleTF(v==='True',q.ans,q.q);};})(val);
+      row.appendChild(btn);
+    });inp.appendChild(row);
+  } else {
+    var row=document.createElement('div');row.className='fill-row';
+    var field=document.createElement('input');field.className='fill-input';field.type='text';field.id='fill-inp';field.placeholder='Type your answer…';
+    var sbtn=document.createElement('button');sbtn.className='submit-btn';sbtn.textContent='Submit';
+    sbtn.onclick=function(){handleFill(field.value.trim(),q.keywords,q.q);};
+    field.onkeydown=function(e){if(e.key==='Enter')sbtn.click();};
+    row.appendChild(field);row.appendChild(sbtn);inp.appendChild(row);
+    setTimeout(function(){field.focus();},100);
   }
 
-  function selectAnswer(index) {
-    if (selectedOption !== null) return;
-    
-    selectedOption = index;
-    const options = document.querySelectorAll('.quiz-option');
-    const correctIndex = quizQuestions[currentQuestion].answer;
-    
-    options.forEach((option, i) => {
-      if (i === correctIndex) {
-        option.classList.add('correct');
-      } else if (i === index && i !== correctIndex) {
-        option.classList.add('incorrect');
-      }
-      option.style.cursor = 'default';
-    });
-    
-    if (index === correctIndex) {
-      score++;
-      scoreEl.textContent = score;
-      resultEl.innerHTML = `<span style="color:#2ecc71">✓ Correct!</span><br><small>${quizQuestions[currentQuestion].fact}</small>`;
-    } else {
-      resultEl.innerHTML = `<span style="color:#e74c3c">✗ Incorrect.</span><br>
-                           <small>The correct answer is: <strong>${quizQuestions[currentQuestion].options[correctIndex]}</strong></small><br>
-                           <small>${quizQuestions[currentQuestion].fact}</small>`;
-    }
-    
-    nextBtn.style.display = 'inline-block';
+  var fb=document.getElementById('feedback');fb.className='feedback';fb.innerHTML='';
+  var nb=document.getElementById('next-btn');nb.className='';nb.style.display='none';
+  var card=document.getElementById('q-card');card.style.animation='none';void card.offsetWidth;card.style.animation='';
+}
+
+function showFeedback(ok,msg){
+  var fb=document.getElementById('feedback');
+  fb.className='feedback show '+(ok?'correct-fb':'wrong-fb');
+  fb.innerHTML=(ok?'✅ ':'❌ ')+msg;
+  var nb=document.getElementById('next-btn');nb.style.display='block';nb.className='show';
+  if(ok)correct++;else wrong++;
+  updateScore();
+}
+
+function handleMCQ(chosen,ansIdx,opts,qText){
+  if(answered)return;answered=true;
+  var btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(function(b,i){b.disabled=true;if(i===ansIdx)b.classList.add('correct');else if(i===chosen&&chosen!==ansIdx)b.classList.add('wrong');});
+  var ok=chosen===ansIdx;
+  if(!ok)missed.push({q:qText,a:opts[ansIdx]});
+  showFeedback(ok,ok?'Correct!':'Correct answer: <strong>'+opts[ansIdx]+'</strong>');
+}
+
+function handleTF(chosen,correctAns,qText){
+  if(answered)return;answered=true;
+  var btns=document.querySelectorAll('.tf-btn');
+  btns.forEach(function(b){b.disabled=true;var bv=b.textContent==='True';if(bv===correctAns)b.classList.add('correct');else if(bv===chosen&&chosen!==correctAns)b.classList.add('wrong');});
+  var ok=chosen===correctAns;
+  if(!ok)missed.push({q:qText,a:correctAns?'True':'False'});
+  showFeedback(ok,ok?'Correct!':'Correct answer: <strong>'+(correctAns?'True':'False')+'</strong>');
+}
+
+function handleFill(val,keywords,qText){
+  if(answered||!val)return;answered=true;
+  var field=document.getElementById('fill-inp');
+  var sbtn=document.querySelector('.submit-btn');if(sbtn)sbtn.disabled=true;
+  var clean=val.toLowerCase().trim(); var ok=keywords.some(function(k){return clean===k.toLowerCase();});
+  field.className='fill-input '+(ok?'correct':'wrong');
+  if(!ok)missed.push({q:qText,a:keywords[0]});
+  showFeedback(ok,ok?'Correct! "'+val+'" is right.':'Expected: <strong>'+keywords[0]+'</strong>');
+}
+
+document.getElementById('next-btn').addEventListener('click',function(){
+  current++;
+  if(current>=questions.length)showResults();else renderQ();
+});
+
+document.getElementById('restart-btn').addEventListener('click',init);
+
+function showResults(){
+  document.getElementById('quiz-area').style.display='none';
+  document.getElementById('progress-wrap').style.display='none';
+  document.getElementById('score-ribbon').style.display='none';
+  document.getElementById('results-screen').style.display='block';
+  document.getElementById('progress-bar').style.width='100%';
+  var total=questions.length,pct=Math.round(correct/total*100);
+  var rp=document.getElementById('res-pct');rp.textContent=pct+'%';
+  rp.style.color=pct>=75?'var(--correct)':pct>=50?'var(--accent3)':'var(--wrong)';
+  var msg=pct>=90?'🌟 Excellent! You\'re ready.':pct>=75?'👍 Good job! Review missed items.':pct>=50?'📖 Keep studying!':'💪 Don\'t give up. Review and retry!';
+  document.getElementById('res-lbl').textContent=correct+' / '+total+' correct — '+msg;
+  document.getElementById('res-correct').textContent=correct;
+  document.getElementById('res-wrong').textContent=wrong;
+  var ml=document.getElementById('missed-list');ml.innerHTML='';
+  if(missed.length===0){ml.innerHTML='<p style="color:var(--correct);font-size:.9rem;">🎉 Perfect! You got everything right.</p>';}
+  else{missed.forEach(function(m){var d=document.createElement('div');d.className='missed-item';d.innerHTML='<div class="mq">Q: '+m.q+'</div><div class="ma">✓ Answer: '+m.a+'</div>';ml.appendChild(d);});}
+}
+
+
+window.addEventListener('keydown',function(e){
+  if(e.key>='1'&&e.key<='4'&&!answered){
+    var idx=parseInt(e.key)-1;
+    var btns=document.querySelectorAll('.opt-btn');
+    if(btns[idx]) btns[idx].click();
   }
 
-
-  nextBtn.addEventListener('click', () => {
-    currentQuestion++;
-    if (currentQuestion < quizQuestions.length) {
-      loadQuestion();
-    } else {
-      showResults();
-    }
-  });
-
-
-  function showResults() {
-    const percentage = Math.round((score / quizQuestions.length) * 100);
-    let message = '';
-    
-    if (percentage >= 80) {
-      message = `🎉 Excellent! You scored ${percentage}%! You're an Angelicum expert!`;
-    } else if (percentage >= 50) {
-      message = `👍 Good job! ${percentage}% - You know your Angelicum trivia!`;
-    } else {
-      message = `📚 You scored ${percentage}%. Time to explore more Angelicum facts!`;
-    }
-    
-    questionEl.textContent = 'Quiz Completed!';
-    optionsEl.innerHTML = '';
-    resultEl.innerHTML = `
-      <h3>${message}</h3>
-      <p>You got ${score} out of ${quizQuestions.length} questions correct.</p>
-      <button onclick="location.reload()" class="quiz-button">Try Again</button>
-    `;
-    nextBtn.style.display = 'none';
+  if(e.key.toLowerCase()==='n'&&answered){
+    document.getElementById('next-btn').click();
   }
+});
 
-  document.addEventListener('DOMContentLoaded', loadQuestion);
+init();
 </script>
-    <footer>
-        <p>© 2025 Trivia-Ange | UST Angelicum College Trivia Collection</p>
-        <p>All information is presented for educational purposes only</p>
-    </footer>
-
-    <script>
-
-        function toggleThemePalette() {
-            document.getElementById('themePalette').classList.toggle('show');
-        }
-
-        function changeTheme(theme) {
-            document.body.className = theme + '-theme';
-            localStorage.setItem('selectedTheme', theme);
-            toggleThemePalette();
-        }
-
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const savedTheme = localStorage.getItem('selectedTheme') || 'light';
-            changeTheme(savedTheme);
-            
-
-            const cards = document.querySelectorAll('.trivia-card');
-            const nextBtn = document.getElementById('nextFact');
-            let currentIndex = 0;
-
-            cards[currentIndex].classList.add('active');
-            nextBtn.addEventListener('click', function() {
-                cards[currentIndex].classList.remove('active');
-                currentIndex = (currentIndex + 1) % cards.length;
-                cards[currentIndex].classList.add('active');
-            });
-        });
-        
-    </script>
 </body>
 </html>
